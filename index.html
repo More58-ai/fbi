@@ -9,6 +9,7 @@
 body {
     margin: 0;
     font-family: "Segoe UI", Arial, sans-serif;
+    background: #f7f9fc;
 }
 
 /* HEADER */
@@ -19,11 +20,25 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
+
+.header a {
+    color: white;
+    text-decoration: none;
+}
+
 .logo {
     width: 80px;
     margin-right: 12px;
+    transition: 0.25s;
 }
+.logo:hover {
+    transform: scale(1.08);
+}
+
 .header-left {
     display: flex;
     align-items: center;
@@ -36,15 +51,17 @@ body {
     align-items: center;
     gap: 18px;
 }
-.icons img {
+.icons a img {
     width: 26px;
     filter: brightness(1) invert(1);
     cursor: pointer;
     transition: .2s;
 }
-.icons img:hover {
+.icons a img:hover {
     transform: scale(1.15);
+    filter: drop-shadow(0 0 5px #1e59a8);
 }
+
 .lang-btn {
     background: #1e59a8;
     border: none;
@@ -53,6 +70,10 @@ body {
     cursor: pointer;
     color: white;
     font-weight: bold;
+    transition: .3s;
+}
+.lang-btn:hover {
+    background: #2b75d1;
 }
 
 /* NAVIGATION */
@@ -89,14 +110,16 @@ body {
     padding: 10px 0;
     border-radius: 5px;
     z-index: 100;
+    animation: fadeIn .2s;
 }
 .dropdown-menu a {
     display: block;
     padding: 8px 15px;
     white-space: nowrap;
 }
-.dropdown:hover .dropdown-menu {
-    display: block;
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* BURGER MENU */
@@ -104,14 +127,22 @@ body {
     display: none;
     font-size: 26px;
     cursor: pointer;
+    transition: .3s;
+}
+.burger:hover {
+    transform: scale(1.2);
 }
 
 /* CONTENT */
 .content {
     padding: 40px 80px;
+    text-align: center;
 }
 .content h1 {
     font-size: 36px;
+}
+.content p {
+    font-size: 20px;
 }
 
 /* FOOTER */
@@ -124,62 +155,106 @@ footer {
 
 /* RESPONSIVE */
 @media (max-width: 900px) {
+    .header {
+        padding: 15px 20px;
+    }
+
+    .logo {
+        width: 60px;
+    }
+
+    .header-left {
+        font-size: 16px;
+    }
+
+    .icons {
+        gap: 10px;
+    }
+
     .menu {
         display: none;
         flex-direction: column;
+        gap: 10px;
+        padding: 12px 20px;
     }
+
+    .dropdown-menu {
+        position: static;
+        box-shadow: none;
+        background: transparent;
+        padding: 0;
+    }
+
+    .dropdown-menu a {
+        padding-left: 20px;
+    }
+
     .burger {
         display: block;
         color: #fff;
     }
-    .dropdown-menu {
-        position: static;
-        box-shadow: none;
-    }
+
     .menu.show {
         display: flex;
+        animation: fadeIn .3s;
+    }
+
+    .content {
+        padding: 30px 20px;
+    }
+    .content h1 {
+        font-size: 28px;
+    }
+    .content p {
+        font-size: 17px;
     }
 }
-<body>
 </style>
 </head>
 
+<body>
 
 <header class="header">
     <div class="header-left">
-        <img src="https://i.postimg.cc/pdyjDF1n/sbu-removebg-preview.png" class="logo">
-        СЛУЖБА БЕЗПЕКИ УКРАЇНИ
+        <a href="#">
+            <img src="https://i.postimg.cc/pdyjDF1n/sbu-removebg-preview.png" class="logo">
+        </a>
+        <a href="#">СЛУЖБА БЕЗПЕКИ УКРАЇНИ</a>
     </div>
 
     <div class="icons">
-        <img src="https://cdn-icons-png.flaticon.com/512/145/145802.png">
-        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png">
-        <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png">
-        <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png">
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/145/145802.png"></a>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/174/174855.png"></a>
+
+        <a href="https://t.me/+_L963YuDI7hhNmIy" target="_blank" rel="noopener noreferrer">
+            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png">
+        </a>
+
+        <a href="https://www.youtube.com/@moorechik_official" target="_blank" rel="noopener noreferrer">
+            <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png">
+        </a>
+
         <button class="lang-btn" onclick="toggleLang()">ENG</button>
         <span class="burger" onclick="toggleMenu()">☰</span>
     </div>
 </header>
 
+<!-- Меню з виправленням -->
 <nav class="menu" id="navMenu">
-    <div class="dropdown">
+    <div class="dropdown" id="dropdownSBU">
         <a href="#">Про СБУ ▼</a>
-        <div class="dropdown-menu">
+        <div class="dropdown-menu" id="sbuMenu">
             <a href="#">Історія</a>
-            <a href="#">Керівництво</a>
+            <a href="https://more58-ai.github.io/fbi/pidrozdil/index.html" target="_blank" rel="noopener noreferrer">Підрозділи</a>
             <a href="#">Структура</a>
         </div>
     </div>
 
     <a href="#">Пресцентр</a>
-    <a href="https://more58-ai.github.io/fbi/tablet/index.html"
- target="_blank" rel="noopener noreferrer">
-    Планшет
-   <li>
-  <a href="https://more58-ai.github.io/fbi/sklad/index.html" target="_blank" rel="noopener noreferrer">
-    Старший особовий склад
-  </a>
-</li>
+
+    <a href="https://more58-ai.github.io/fbi/tablet/index.html" target="_blank" rel="noopener noreferrer">Планшет</a>
+
+    <a href="https://more58-ai.github.io/fbi/sklad/index.html" target="_blank" rel="noopener noreferrer">Старший особовий склад</a>
 
     <a href="#">Контакти</a>
 </nav>
@@ -217,9 +292,23 @@ function toggleLang() {
         currentLang = "UA";
     }
 }
+
+// Випадаюче меню з затримкою закриття
+const dropdown = document.getElementById('dropdownSBU');
+const dropdownMenu = document.getElementById('sbuMenu');
+let closeTimeout;
+
+dropdown.addEventListener('mouseenter', () => {
+    clearTimeout(closeTimeout);
+    dropdownMenu.style.display = 'block';
+});
+
+dropdown.addEventListener('mouseleave', () => {
+    closeTimeout = setTimeout(() => {
+        dropdownMenu.style.display = 'none';
+    }, 300); // затримка 300 мс
+});
 </script>
 
 </body>
 </html>
-
-
