@@ -36,8 +36,8 @@
         letter-spacing: 1.5px;
         text-shadow: 0 0 10px rgba(244,211,94,0.25);
         margin-top: 8px;
-        animation: fadeIn 1s ease-in-out 0.2s forwards;
         opacity: 0;
+        animation: fadeIn 1s ease-in-out 0.2s forwards;
     }
 
     .underline {
@@ -47,14 +47,14 @@
         margin: 18px auto 45px;
         border-radius: 3px;
         box-shadow: 0 0 12px rgba(244,211,94,0.5);
-        animation: fadeIn 1s ease-in-out 0.3s forwards;
         opacity: 0;
+        animation: fadeIn 1s ease-in-out 0.3s forwards;
     }
 
     .container {
-        max-width: 1000px;
+        max-width: 1100px;
         margin: auto;
-        padding: 0 20px 40px;
+        padding: 0 20px 60px;
     }
 
     .grid {
@@ -65,28 +65,39 @@
     }
 
     .card {
-        background: rgba(255,255,255,0.04);
+        background: rgba(255,255,255,0.05);
         padding: 32px 22px;
         border-radius: 14px;
         text-align: center;
-        width: 260px;
+        width: 270px;
+        cursor: pointer;
         border: 1px solid rgba(244,211,94,0.25);
         transition: 0.25s;
-        backdrop-filter: blur(4px);
+        backdrop-filter: blur(6px);
+        box-shadow: 0 0 15px rgba(0,0,0,0.3);
     }
 
     .card:hover {
         transform: translateY(-8px);
         border-color: #f4d35e;
-        box-shadow: 0 0 20px rgba(244,211,94,0.3);
-        background: rgba(255,255,255,0.06);
+        box-shadow: 0 0 25px rgba(244,211,94,0.3);
+        background: rgba(255,255,255,0.08);
     }
 
-    .card img {
-        width: 115px;
-        height: 115px;
-        object-fit: contain;
+    .img-box {
+        background: radial-gradient(circle at center, rgba(244,211,94,0.2), transparent 70%);
+        border-radius: 14px;
+        padding: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         margin-bottom: 15px;
+    }
+
+    .img-box img {
+        width: 130px;
+        height: 130px;
+        object-fit: contain;
         filter: drop-shadow(0 0 15px rgba(0,0,0,0.35));
     }
 
@@ -96,6 +107,61 @@
         padding-top: 5px;
         color: #f4d35e;
         text-shadow: 0 0 8px rgba(244,211,94,0.35);
+    }
+
+    /* MODAL WINDOW */
+    .modal-bg {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.7);
+        backdrop-filter: blur(4px);
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+    }
+
+    .modal {
+        background: #0c1a30;
+        padding: 25px 30px;
+        border-radius: 16px;
+        width: 360px;
+        text-align: center;
+        border: 1px solid #f4d35e;
+        box-shadow: 0 0 25px rgba(244,211,94,0.4);
+        animation: fadeInModal 0.3s ease-out;
+    }
+
+    @keyframes fadeInModal {
+        from { opacity: 0; transform: scale(0.8); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal img {
+        width: 110px;
+        margin-bottom: 12px;
+    }
+
+    .modal p {
+        font-size: 15px;
+        color: #d8e1f8;
+        line-height: 1.35em;
+        margin-bottom: 18px;
+    }
+
+    .close-btn {
+        background: #f4d35e;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        color: #0b1d35;
+        transition: .2s;
+    }
+
+    .close-btn:hover {
+        background: #ffe894;
     }
 
     footer {
@@ -121,27 +187,88 @@
 <div class="container">
     <div class="grid">
 
-        <div class="card">
-            <img src="https://i.postimg.cc/9XRNVxCj/DKIB.jpg" alt="Департамент кібербезпеки">
+        <div class="card" onclick="openModal('dkib')">
+            <div class="img-box"><img src="https://i.postimg.cc/9XRNVxCj/DKIB.jpg"></div>
             <h3>Департамент кібербезпеки</h3>
         </div>
 
-        <div class="card">
-            <img src="https://i.postimg.cc/8ccGPLpj/Departament-vijskovoi-kontrrozvidki.jpg" alt="Департамент військової контррозвідки">
+        <div class="card" onclick="openModal('dvc')">
+            <div class="img-box"><img src="https://i.postimg.cc/8ccGPLpj/Departament-vijskovoi-kontrrozvidki.jpg"></div>
             <h3>Департамент військової контррозвідки</h3>
         </div>
 
-        <div class="card">
-            <img src="https://i.postimg.cc/xjZD3JT9/Antiteroristicnij-centr-pri-SBU.png" alt="Антитерористичний центр при СБУ">
+        <div class="card" onclick="openModal('atc')">
+            <div class="img-box"><img src="https://i.postimg.cc/xjZD3JT9/Antiteroristicnij-centr-pri-SBU.png"></div>
             <h3>Антитерористичний центр при СБУ</h3>
         </div>
 
+        <div class="card" onclick="openModal('uk')">
+            <div class="img-box"><img src="https://i.postimg.cc/jqNRg1Kw/Upr-k-removebg-preview.png"></div>
+            <h3>Управління «К»</h3>
+        </div>
+
+        <div class="card" onclick="openModal('alfa')">
+            <div class="img-box"><img src="https://i.postimg.cc/SNvY65Gn/CSO-A.jpg"></div>
+            <h3>Центр спецоперацій «Альфа»</h3>
+        </div>
+
+    </div>
+</div>
+
+<!-- MODALS -->
+<div id="modal-bg" class="modal-bg" onclick="closeModal(event)">
+    <div id="modal" class="modal" onclick="event.stopPropagation()">
+        <img id="modal-img" src="">
+        <h3 id="modal-title"></h3>
+        <p id="modal-text"></p>
+        <button class="close-btn" onclick="closeModal(event)">Закрити</button>
     </div>
 </div>
 
 <footer>
     © Служба безпеки України — Всі права захищено
 </footer>
+
+<script>
+const data = {
+    dkib: {
+        img: "https://i.postimg.cc/9XRNVxCj/DKIB.jpg",
+        title: "Департамент кібербезпеки",
+        text: "Виявлення, запобігання та протидія кіберзагрозам, кібератакам та шпигунству в інформаційному просторі України."
+    },
+    dvc: {
+        img: "https://i.postimg.cc/8ccGPLpj/Departament-vijskovoi-kontrrozvidki.jpg",
+        title: "Департамент військової контррозвідки",
+        text: "Охорона оборонного потенціалу України, викриття диверсій, шпигунства та загроз у військовому секторі."
+    },
+    atc: {
+        img: "https://i.postimg.cc/xjZD3JT9/Antiteroristicnij-centr-pri-SBU.png",
+        title: "Антитерористичний центр",
+        text: "Протидія і запобігання терактам, звільнення заручників, ліквідація терористичних груп."
+    },
+    uk: {
+        img: "https://i.postimg.cc/jqNRg1Kw/Upr-k-removebg-preview.png",
+        title: "Управління «К»",
+        text: "Боротьба з корупцією, організованою злочинністю та забезпечення економічної безпеки держави."
+    },
+    alfa: {
+        img: "https://i.postimg.cc/SNvY65Gn/CSO-A.jpg",
+        title: "Центр спецоперацій «Альфа»",
+        text: "Елітний підрозділ СБУ, що виконує найскладніші бойові завдання: звільнення заручників, штурмові й контртерористичні операції."
+    }
+};
+
+function openModal(key) {
+    document.getElementById("modal-img").src = data[key].img;
+    document.getElementById("modal-title").innerText = data[key].title;
+    document.getElementById("modal-text").innerText = data[key].text;
+    document.getElementById("modal-bg").style.display = "flex";
+}
+
+function closeModal(event) {
+    document.getElementById("modal-bg").style.display = "none";
+}
+</script>
 
 </body>
 </html>
