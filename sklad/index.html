@@ -1,315 +1,174 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Служба Безпеки України</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>СБУ – Офіційний Портал</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 <style>
+/* ЗАГАЛЬНІ СТИЛІ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-    margin:0;
-    font-family:"Segoe UI",Arial,sans-serif;
-    background:#d2d4d8;
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(to bottom, #0d1b2a, #1b263b);
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
 }
-.header {
-    background:#0d2340;color:#fff;padding:20px 35px;
-    display:flex;justify-content:space-between;align-items:center;
-    position:sticky;top:0;z-index:1000;
-}
-.header a { color:white;text-decoration:none; }
-.logo { width:80px;margin-right:12px;transition:.25s; }
-.logo:hover { transform:scale(1.08); }
-.header-left { display:flex;align-items:center;font-size:20px;font-weight:bold; }
-.icons { display:flex;align-items:center;gap:12px; }
-.icons a img { width:26px;filter:brightness(1) invert(1);cursor:pointer;transition:.2s; }
-.icons a img:hover { transform:scale(1.15);filter:drop-shadow(0 0 5px #1e59a8); }
-.lang-btn {
-    background:#1e59a8;border:none;padding:9px 15px;border-radius:4px;
-    cursor:pointer;color:white;font-weight:bold;transition:.3s;
-}
-.lang-btn:hover { background:#2b75d1; }
-.menu {
-    background:#edf4fa;padding:12px 35px;display:flex;gap:25px;font-weight:bold;
-}
-.menu a { text-decoration:none;color:#000;transition:.2s; }
-.menu a:hover { color:#1e59a8; }
-.dropdown { position:relative; }
-.dropdown-menu {
-    display:none; position:absolute; background:white; top:100%; left:0;
-    min-width:200px; box-shadow:0 4px 15px rgba(0,0,0,0.15);
-    padding:10px 0;border-radius:8px; z-index:100;
-    opacity:0; transform:translateY(-10px); transition:all .3s ease;
-}
-.dropdown:hover .dropdown-menu {
-    display:block; opacity:1; transform:translateY(0);
-}
-.dropdown-menu a {
-    display:block;padding:8px 20px;white-space:nowrap; color:#0d2340;
-}
-.dropdown-menu a:hover { background:#e6f0ff; color:#1e59a8; border-radius:5px; }
-.burger { display:none;font-size:26px;cursor:pointer;transition:.3s; }
-.burger:hover { transform:scale(1.2); }
-.content { padding:40px 80px;text-align:center; }
-.content h1 { font-size:36px; }
-.content p { font-size:20px; }
-footer { background:#0d2340;color:#fff;padding:20px;text-align:center; }
 
-/* snow */
+/* СНІГ */
 .snowflake {
-    position: fixed; top: -10px; color:white; font-size:15px;
-    pointer-events:none; user-select:none; z-index:999999;
-    animation:fall linear infinite;
-}
-@keyframes fall { 0% { transform:translateY(-10px); opacity:1;} 100%{transform:translateY(110vh); opacity:0.3;} }
-
-/* Music button */
-#musicToggle {
-    background:#1e59a8; border:none; color:white;
-    padding:9px 15px; border-radius:4px; font-weight:bold; cursor:pointer; transition:.3s;
-}
-#musicToggle:hover { background:#2b75d1; }
-
-/* History modal */
-#historyModal {
-    display:none; position:fixed; top:0; left:0;
-    width:100%; height:100%; background:rgba(0,0,0,0.65);
-    z-index:99999; justify-content:center; align-items:center;
-}
-#historyModal .modal-box {
-    background:white; width:90%; max-width:600px; padding:25px 30px;
-    border-radius:14px; box-shadow:0 0 25px rgba(0,0,0,0.3);
-    animation:fadeIn .25s; max-height:80vh; overflow-y:auto;
-    font-family:'Segoe UI',sans-serif; line-height:1.5;
-    border:2px solid #1e59a8; box-shadow:0 8px 20px rgba(30,89,168,0.3);
-}
-#historyModal .modal-box h2 { text-align:center; color:#0d2340; text-shadow:1px 1px 2px #a3c0ff; }
-#historyModal .modal-box p b { color:#1e59a8; }
-#historyModal .modal-box button {
-    margin-top:15px; background:#1e59a8; color:white; border:none;
-    padding:10px 18px; border-radius:6px; font-weight:bold;
-    cursor:pointer; display:block; margin-left:auto;
+  position: fixed;
+  top: -10px;
+  color: white;
+  font-size: 1em;
+  user-select: none;
+  pointer-events: none;
+  z-index: 1000;
+  animation-name: fall;
+  animation-duration: 10s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  opacity: 0.8;
 }
 
-/* Music panel */
-#musicPanel {
-    position:fixed; top:50%; right:-320px; transform:translateY(-50%);
-    width:300px; max-width:90%; border-radius:14px 0 0 14px;
-    padding:16px; z-index:100000; backdrop-filter:blur(18px) saturate(120%);
-    background: rgba(255,255,255,0.55); box-shadow:0 8px 30px rgba(14,30,37,0.12),0 2px 6px rgba(30,89,168,0.06);
-    transition:right 350ms cubic-bezier(.2,.9,.3,1), opacity 300ms; opacity:0;
-    border:1px solid rgba(255,255,255,0.55);
+@keyframes fall {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(100vh) rotate(360deg); }
 }
-#musicPanel.show { right:10px; opacity:1; }
-#musicPanel .panel-header { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:10px; }
-#musicPanel h3 { margin:0; font-size:16px; color:#0d2340; }
-#musicPanel .close-btn { background:transparent; border:none; font-size:18px; cursor:pointer; color:#0d2340; }
-.track-list { margin:8px 0 12px 0; max-height:180px; overflow:auto; padding-right:6px; }
-.track-item {
-    display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px;
-    border-radius:10px; cursor:pointer; transition:all .18s;
+
+/* HEADER */
+header {
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(10, 25, 50, 0.85);
+  border-bottom: 2px solid #00ffff;
+  box-shadow: 0 0 30px #00ffff;
 }
-.track-item:hover { transform:translateX(-4px); background:rgba(30,89,168,0.06); }
-.track-item.active { box-shadow:0 6px 18px rgba(30,89,168,0.12);
-    background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(250,250,250,0.6)); }
-.track-meta { display:flex; flex-direction:column; align-items:flex-start; gap:2px; }
-.track-title { font-weight:700;color:#0d2340;font-size:14px; }
-.track-artist { font-size:12px;color:#3b4b5a;opacity:0.8; }
-.player-controls { display:flex; align-items:center; gap:8px; justify-content:center; margin-top:6px; }
-.control-btn { background:linear-gradient(180deg,#fff,#f0f6ff); border:1px solid rgba(13,35,64,0.06);
-    padding:8px 10px; border-radius:10px; cursor:pointer; box-shadow:0 6px 14px rgba(13,35,64,0.06); transition:transform .12s; }
-.control-btn:active { transform:scale(.98); }
-.icon { font-size:16px; color:#0d2340; }
-.progress-row { display:flex; align-items:center; gap:8px; margin-top:10px; }
-.progress-row input[type=range] { -webkit-appearance:none; width:100%; height:6px; background:transparent; }
-input[type=range]::-webkit-slider-runnable-track { height:6px; background:linear-gradient(90deg,#1e59a8,#6fb3ff); border-radius:6px; }
-input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:14px;height:14px;border-radius:50%;background:#fff;border:2px solid #1e59a8;margin-top:-4px;box-shadow:0 4px 10px rgba(30,89,168,0.18); }
-.time-label { font-size:11px;color:#2b3a47;width:44px;text-align:center; }
+header img {
+  width: 150px;
+  filter: drop-shadow(0 0 20px #00ffff);
+  animation: pulse 3s infinite ease-in-out;
+}
+@keyframes pulse {
+  50% { transform: scale(1.1); }
+}
+header h1 {
+  font-family: 'Russo One';
+  font-size: 3rem;
+  margin-top: 15px;
+  color: #00ffff;
+  text-shadow: 0 0 20px #00ffff;
+}
+header h2 {
+  margin-top: 10px;
+  color: #a0e7ff;
+  font-size: 1.3rem;
+}
+
+/* MAIN SECTION */
+.section {
+  max-width: 700px;
+  margin: 50px auto;
+  padding: 40px;
+  background: rgba(20, 40, 70, 0.85);
+  border-radius: 15px;
+  border: 2px solid #00ffff;
+  box-shadow: 0 0 30px #00ffff;
+  text-align: center;
+  transition: 0.3s;
+}
+.section:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 50px #00ffff, 0 0 25px #ffffff;
+}
+.section h3 {
+  font-family: 'Russo One';
+  font-size: 2.5rem;
+  color: #ffffff;
+  text-shadow: 0 0 15px #00ffff;
+  margin-bottom: 30px;
+}
+
+/* PERSON BLOCK */
+.person {
+  display: inline-block;
+  padding: 30px;
+  background: rgba(10, 20, 40, 0.7);
+  border-radius: 15px;
+  border: 2px solid #00ffff;
+  box-shadow: 0 0 20px #00ffff;
+  transition: 0.3s;
+}
+.person:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 40px #00ffff, 0 0 20px #ffffff;
+}
+.person .icon {
+  font-size: 3rem;
+  color: #00ffff;
+  margin-bottom: 15px;
+}
+.person strong {
+  display: block;
+  font-size: 1.6rem;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+.person p {
+  font-size: 1rem;
+  color: #a0e7ff;
+}
+
+/* FOOTER */
+footer {
+  margin-top: 50px;
+  padding: 20px;
+  text-align: center;
+  background: rgba(10, 20, 40, 0.85);
+  border-top: 2px solid #00ffff;
+  color: #a0e7ff;
+}
 </style>
 </head>
 <body>
 
-<header class="header">
-    <div class="header-left">
-        <a href="#"><img src="https://i.postimg.cc/pdyjDF1n/sbu-removebg-preview.png" class="logo"></a>
-        <a href="#">СЛУЖБА БЕЗПЕКИ УКРАЇНИ</a>
-    </div>
-
-    <div class="icons">
-        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/145/145802.png"></a>
-        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/174/174855.png"></a>
-        <a href="https://t.me/+_L963YuDI7hhNmIy" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png"></a>
-        <a href="https://www.youtube.com/@moorechik_official" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png"></a>
-        <button id="musicToggle">Музыка: Вкл</button>
-        <button id="openMusicPicker" style="background:#fff;border:1px solid rgba(13,35,64,0.08);padding:9px 12px;border-radius:6px;cursor:pointer;font-weight:600;">Вибрати музику</button>
-        <button class="lang-btn" onclick="toggleLang()">ENG</button>
-        <span class="burger" onclick="toggleMenu()">☰</span>
-    </div>
+<header>
+  <img src="https://i.postimg.cc/pdyjDF1n/sbu-removebg-preview.png" />
+  <h1>СЛУЖБА БЕЗПЕКИ УКРАЇНИ</h1>
+  <h2>Офіційний Портал</h2>
 </header>
 
-<nav class="menu" id="navMenu">
-    <div class="dropdown">
-        <a href="#">Про СБУ ▼</a>
-        <div class="dropdown-menu">
-            <a href="#" onclick="openHistory()">Історія СБУ</a>
-            <a href="https://more58-ai.github.io/fbi/pidrozdil/index.html" target="_blank">Підрозділи</a>
-            <a href="#">Структура</a>
-        </div>
+<main>
+  <section class="section">
+    <h3>Керівник</h3>
+    <div class="person">
+      <i class="fas fa-user-shield icon"></i>
+      <strong>Генерал — Роман Басистий</strong>
+      <p>Керує всіма стратегічними напрямами служби.</p>
     </div>
-    <a href="#" onclick="openPress()">Пресцентр</a>
-    <a href="https://more58-ai.github.io/fbi/tablet/index.html" target="_blank">Планшет</a>
-    <a href="https://more58-ai.github.io/fbi/sklad/index.html" target="_blank">Старший особовий склад</a>
-</nav>
+  </section>
+</main>
 
-<section class="content" id="mainText">
-    <h1>Долучайся до команди ЦСО «А» СБУ</h1>
-    <p>Приєднуйся до одного з кращих спецпідрозділів України!</p>
-</section>
+<footer>
+  &copy; 2025 СБУ — Офіційний ресурс
+</footer>
 
-<footer>Телефон довіри: +xxx xx xxx xx xx</footer>
-
-<audio id="bgMusic" autoplay loop>
-    <source src="https://raw.githubusercontent.com/More58-ai/fbi/main/Wham!%20-%20Last%20Christmas%20(Official%20Video).mp3" type="audio/mpeg">
-</audio>
-
-<div id="historyModal">
-    <div class="modal-box">
-        <h2>Історія Служби Безпеки України</h2>
-        <p>Служба безпеки України була створена <b>20 вересня 1991 року</b> після ухвалення Закону України «Про Службу безпеки України». Вона стала правонаступником структур КДБ УРСР, але отримала нову модель державної безпеки незалежної України.</p>
-        <p>Головні завдання СБУ включають захист <b>суверенітету</b>, територіальної цілісності, боротьбу з тероризмом, контррозвідувальну діяльність та охорону державної таємниці.</p>
-        <p>Після 2014 року СБУ відіграє ключову роль у боротьбі з російською агресією: протидія ДРГ, кібератакам, терористичним загрозам та забезпечення безпеки військових операцій.</p>
-        <p>Сьогодні СБУ проходить модернізацію, адаптуючи свою структуру та методи роботи до стандартів НАТО.</p>
-        <button onclick="closeHistory()">Закрити</button>
-    </div>
-</div>
-
-<div id="musicPanel" aria-hidden="true">
-    <div class="panel-header">
-        <h3>Музичний плеєр</h3>
-        <button class="close-btn" id="closeMusicPicker">✕</button>
-    </div>
-    <div class="track-list" id="trackList">
-        <div class="track-item active" data-src="https://raw.githubusercontent.com/More58-ai/fbi/main/Wham!%20-%20Last%20Christmas%20(Official%20Video).mp3">
-            <div class="track-meta">
-                <div class="track-title">Last Christmas</div>
-                <div class="track-artist">Wham!</div>
-            </div>
-            <div style="font-size:12px;color:#2b3a47;">3:32</div>
-        </div>
-    </div>
-    <div style="border-top:1px solid rgba(13,35,64,0.04);padding-top:10px;">
-        <div class="player-controls">
-            <button class="control-btn" id="stopBtn">⏹</button>
-            <button class="control-btn" id="prevBtn" disabled>⏮</button>
-            <button class="control-btn" id="playPauseBtn">▶️</button>
-            <button class="control-btn" id="nextBtn">⏭</button>
-        </div>
-        <div class="progress-row">
-            <div class="time-label" id="currentTime">0:00</div>
-            <input type="range" id="seekBar" value="0" min="0" max="100" step="0.1">
-            <div class="time-label" id="durationTime">0:00</div>
-        </div>
-    </div>
-</div>
-
+<!-- СНІГ -->
 <script>
-/* Menu toggle for mobile */
-function toggleMenu(){ document.getElementById("navMenu").classList.toggle("show"); }
-
-/* Language toggle */
-let currentLang="UA";
-function toggleLang(){
-    const t=document.querySelector('#mainText h1');
-    const p=document.querySelector('#mainText p');
-    if(currentLang==="UA"){
-        t.textContent="Join the SSU Special Operations Team";
-        p.textContent="Become part of one of the best units in Ukraine!";
-        document.querySelector('.lang-btn').textContent="UA";
-        currentLang="ENG";
-    } else {
-        t.textContent="Долучайся до команди ЦСО «А» СБУ";
-        p.textContent="Приєднуйся до одного з кращих спецпідрозділів України!";
-        document.querySelector('.lang-btn').textContent="ENG";
-        currentLang="UA";
-    }
+const snowCount = 50;
+for (let i = 0; i < snowCount; i++) {
+  const snow = document.createElement('div');
+  snow.className = 'snowflake';
+  snow.style.left = Math.random() * 100 + 'vw';
+  snow.style.fontSize = Math.random() * 20 + 10 + 'px';
+  snow.style.animationDuration = (5 + Math.random() * 10) + 's';
+  snow.style.opacity = Math.random();
+  snow.innerHTML = '❄';
+  document.body.appendChild(snow);
 }
-
-/* Snowflakes */
-function createSnowflake() {
-    const snow = document.createElement("div");
-    snow.classList.add("snowflake");
-    snow.textContent = "❄";
-    snow.style.left = Math.random()*100 + "vw";
-    snow.style.fontSize = (Math.random()*10+10)+"px";
-    snow.style.animationDuration=(Math.random()*5+4)+"s";
-    document.body.appendChild(snow);
-    setTimeout(()=>snow.remove(),9000);
-}
-setInterval(createSnowflake,120);
-
-/* Music controls */
-const audio=document.getElementById("bgMusic"); audio.volume=0.3;
-document.getElementById("musicToggle").onclick=function(){
-    if(audio.paused){ audio.play(); this.textContent="Музыка: Вкл"; } 
-    else { audio.pause(); this.textContent="Музыка: Выкл"; }
-};
-
-/* History modal */
-function openHistory(){ document.getElementById("historyModal").style.display="flex"; }
-function closeHistory(){ document.getElementById("historyModal").style.display="none"; }
-
-/* Music panel */
-const openPickerBtn=document.getElementById('openMusicPicker');
-const musicPanel=document.getElementById('musicPanel');
-const closePickerBtn=document.getElementById('closeMusicPicker');
-const playPauseBtn=document.getElementById('playPauseBtn');
-const stopBtn=document.getElementById('stopBtn');
-const prevBtn=document.getElementById('prevBtn');
-const nextBtn=document.getElementById('nextBtn');
-const seekBar=document.getElementById('seekBar');
-const currentTimeLabel=document.getElementById('currentTime');
-const durationLabel=document.getElementById('durationTime');
-const playIcon=playPauseBtn;
-const trackList=document.getElementById('trackList');
-let activeTrackItem=document.querySelector('.track-item.active');
-
-/* Panel toggle */
-openPickerBtn.addEventListener('click',()=>{ musicPanel.classList.toggle('show'); });
-closePickerBtn.addEventListener('click',()=>{ musicPanel.classList.remove('show'); });
-
-trackList.addEventListener('click',(e)=>{
-    let item=e.target.closest('.track-item');
-    if(!item) return;
-    if(item===activeTrackItem) return;
-    const src=item.getAttribute('data-src');
-    if(activeTrackItem) activeTrackItem.classList.remove('active');
-    item.classList.add('active');
-    activeTrackItem=item;
-    audio.pause();
-    while(audio.firstChild) audio.removeChild(audio.firstChild);
-    const s=document.createElement('source');
-    s.src=src; s.type='audio/mpeg';
-    audio.appendChild(s); audio.load(); audio.play();
-});
-
-/* Play/pause */
-function updatePlayIcon(){ playPauseBtn.textContent=audio.paused?'▶️':'⏸'; }
-playPauseBtn.addEventListener('click',()=>{ audio.paused?audio.play():audio.pause(); updatePlayIcon(); });
-stopBtn.addEventListener('click',()=>{ audio.pause(); audio.currentTime=0; updatePlayIcon(); });
-nextBtn.addEventListener('click',()=>{ audio.currentTime=0; audio.play(); updatePlayIcon(); });
-prevBtn.addEventListener('click',()=>{ audio.currentTime=0; audio.play(); updatePlayIcon(); });
-
-/* Seek bar */
-audio.addEventListener('timeupdate',()=>{
-    const dur=audio.duration||0, cur=audio.currentTime||0;
-    seekBar.value=(cur/dur)*100||0;
-    currentTimeLabel.textContent=formatTime(cur);
-    durationLabel.textContent=formatTime(dur);
-});
-seekBar.addEventListener('input',(e)=>{ const dur=audio.duration||0; audio.currentTime=(e.target.value/100)*dur; });
-function formatTime(t){ const m=Math.floor(t/60); const s=Math.floor(t%60); return m+':'+(s<10?'0'+s:s); }
-
-audio.addEventListener('play',updatePlayIcon);
-audio.addEventListener('pause',updatePlayIcon);
-document.addEventListener('DOMContentLoaded',()=>{ updatePlayIcon(); });
 </script>
 
 </body>
