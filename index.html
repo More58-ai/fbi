@@ -5,124 +5,295 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Служба Безпеки України</title>
 <style>
+/* --- DARK THEME & VARIABLES --- */
+:root {
+    --dark-bg: #121212;
+    --dark-surface: #1e1e1e;
+    --dark-header: #0a0a0a;
+    --light-text: #e0e0e0;
+    --light-accent: #2c77b3; 
+    --hover-bg: #333333;
+    --sbu-blue: #1e59a8; 
+    --sbu-dark-blue: #0d2340; 
+}
+
 body {
     margin:0;
     font-family:"Segoe UI",Arial,sans-serif;
-    background:#d2d4d8;
+    background: var(--dark-bg);
+    color: var(--light-text);
 }
 .header {
-    background:#0d2340;color:#fff;padding:20px 35px;
+    background: var(--dark-header);
+    color: var(--light-text);
+    padding:20px 35px;
     display:flex;justify-content:space-between;align-items:center;
     position:sticky;top:0;z-index:1000;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
 }
-.header a { color:white;text-decoration:none; }
+.header a { color:var(--light-text);text-decoration:none; }
 .logo { width:80px;margin-right:12px;transition:.25s; }
 .logo:hover { transform:scale(1.08); }
-.header-left { display:flex;align-items:center;font-size:20px;font-weight:bold; }
+.header-left { 
+    display:flex;
+    align-items:center;
+    font-size:20px;
+    font-weight:bold;
+    gap: 10px;
+}
+.christmas-tree {
+    font-size: 30px;
+    transition: transform 0.5s ease;
+    animation: pulse 2s infinite alternate;
+    margin-right: -10px;
+}
+.christmas-tree:hover { transform: rotate(10deg) scale(1.1); }
+@keyframes pulse {
+    from { color: #d00; text-shadow: 0 0 5px #f00; }
+    to { color: #0d0; text-shadow: 0 0 5px #0f0; }
+}
+
 .icons { display:flex;align-items:center;gap:12px; }
-.icons a img { width:26px;filter:brightness(1) invert(1);cursor:pointer;transition:.2s; }
-.icons a img:hover { transform:scale(1.15);filter:drop-shadow(0 0 5px #1e59a8); }
-.lang-btn {
-    background:#1e59a8;border:none;padding:9px 15px;border-radius:4px;
-    cursor:pointer;color:white;font-weight:bold;transition:.3s;
+.icons a img { 
+    width:26px;
+    filter:brightness(1) invert(1);
+    cursor:pointer;transition:.2s; 
 }
-.lang-btn:hover { background:#2b75d1; }
+.icons a img:hover { transform:scale(1.15);filter:drop-shadow(0 0 5px var(--light-accent)); }
+
+/* Кнопки */
+.lang-btn, #musicToggle, #openMusicPicker {
+    background: var(--sbu-blue); 
+    border:none; padding:9px 15px; border-radius:4px;
+    cursor:pointer; color:white; font-weight:bold; transition:.3s;
+    white-space: nowrap; /* Запобігання переносу тексту на кнопках */
+}
+.lang-btn:hover, #musicToggle:hover { background:var(--light-accent); }
+#openMusicPicker {
+    background: var(--dark-surface);
+    color: var(--light-text);
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+#openMusicPicker:hover { background: var(--hover-bg); }
+
+/* Навігаційне меню */
 .menu {
-    background:#edf4fa;padding:12px 35px;display:flex;gap:25px;font-weight:bold;
+    background: var(--dark-surface);
+    padding:12px 35px;display:flex;gap:25px;font-weight:bold;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
 }
-.menu a { text-decoration:none;color:#000;transition:.2s; }
-.menu a:hover { color:#1e59a8; }
+.menu a { text-decoration:none;color:var(--light-text);transition:.2s; }
+.menu a:hover { color:var(--light-accent); }
+
+/* Дропдаун */
 .dropdown { position:relative; }
 .dropdown-menu {
-    display:none; position:absolute; background:white; top:100%; left:0;
-    min-width:200px; box-shadow:0 4px 15px rgba(0,0,0,0.15);
+    display:none; position:absolute; background:var(--dark-surface);
+    top:100%; left:0;
+    min-width:200px; box-shadow:0 4px 15px rgba(0,0,0,0.5);
     padding:10px 0;border-radius:8px; z-index:100;
     opacity:0; transform:translateY(-10px); transition:all .3s ease;
+    border: 1px solid rgba(255,255,255,0.1);
 }
 .dropdown:hover .dropdown-menu {
     display:block; opacity:1; transform:translateY(0);
 }
 .dropdown-menu a {
-    display:block;padding:8px 20px;white-space:nowrap; color:#0d2340;
+    display:block;padding:8px 20px;white-space:nowrap; color:var(--light-text);
 }
-.dropdown-menu a:hover { background:#e6f0ff; color:#1e59a8; border-radius:5px; }
-.burger { display:none;font-size:26px;cursor:pointer;transition:.3s; }
+.dropdown-menu a:hover { background:var(--hover-bg); color:var(--light-accent); border-radius:5px; }
+.burger { display:none;font-size:26px;cursor:pointer;color:var(--light-text);transition:.3s; }
 .burger:hover { transform:scale(1.2); }
+
+/* Основний контент */
 .content { padding:40px 80px;text-align:center; }
-.content h1 { font-size:36px; }
-.content p { font-size:20px; }
-footer { background:#0d2340;color:#fff;padding:20px;text-align:center; }
 
-/* snow */
-.snowflake {
-    position: fixed; top: -10px; color:white; font-size:15px;
-    pointer-events:none; user-select:none; z-index:999999;
-    animation:fall linear infinite;
+/* ОФОРМЛЕННЯ ТЕКСТУ СБУ */
+.sbu-info {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: justify;
+    background: var(--dark-surface);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 25px rgba(30,89,168,0.2);
+    border: 1px solid rgba(30,89,168,0.4);
 }
-@keyframes fall { 0% { transform:translateY(-10px); opacity:1;} 100%{transform:translateY(110vh); opacity:0.3;} }
 
-/* Music button */
-#musicToggle {
-    background:#1e59a8; border:none; color:white;
-    padding:9px 15px; border-radius:4px; font-weight:bold; cursor:pointer; transition:.3s;
+.sbu-info h2 {
+    font-size: 32px;
+    color: var(--light-accent);
+    text-align: center;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 5px var(--sbu-blue), 0 0 10px var(--light-accent);
 }
-#musicToggle:hover { background:#2b75d1; }
 
-/* History modal */
-#historyModal {
+.sbu-info p {
+    font-size: 18px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+.highlight {
+    color: #ffd700;
+    font-weight: bold;
+    text-shadow: 0 0 3px #ffd700;
+}
+
+/* Футер */
+footer { 
+    background:var(--dark-header);
+    color:var(--light-text);
+    padding:20px;text-align:center; 
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+/* snow, music panel - стилі залишені */
+
+/* --- СТИЛІ МОДАЛЬНИХ ВІКОН --- */
+.modal {
     display:none; position:fixed; top:0; left:0;
-    width:100%; height:100%; background:rgba(0,0,0,0.65);
+    width:100%; height:100%; background:rgba(0,0,0,0.85); 
     z-index:99999; justify-content:center; align-items:center;
 }
-#historyModal .modal-box {
-    background:white; width:90%; max-width:600px; padding:25px 30px;
-    border-radius:14px; box-shadow:0 0 25px rgba(0,0,0,0.3);
-    animation:fadeIn .25s; max-height:80vh; overflow-y:auto;
-    font-family:'Segoe UI',sans-serif; line-height:1.5;
-    border:2px solid #1e59a8; box-shadow:0 8px 20px rgba(30,89,168,0.3);
+.modal-box {
+    background:var(--dark-surface);
+    color: var(--light-text);
+    width:90%; max-width:600px; padding:25px 30px;
+    border-radius:14px; 
+    max-height:80vh; overflow-y:auto;
+    line-height:1.5;
+    border:2px solid var(--sbu-blue); 
+    box-shadow:0 8px 20px rgba(30,89,168,0.3), 0 0 15px rgba(30,89,168,0.3) inset;
+    animation: fadeIn .25s;
 }
-#historyModal .modal-box h2 { text-align:center; color:#0d2340; text-shadow:1px 1px 2px #a3c0ff; }
-#historyModal .modal-box p b { color:#1e59a8; }
-#historyModal .modal-box button {
-    margin-top:15px; background:#1e59a8; color:white; border:none;
+.modal-box h2 { 
+    text-align:center; 
+    color:var(--light-accent); 
+    text-shadow:1px 1px 2px #0a1b2d; 
+}
+.modal-box p b { color:var(--light-accent); }
+.modal-box button {
+    margin-top:15px; background:var(--sbu-blue); color:white; border:none;
     padding:10px 18px; border-radius:6px; font-weight:bold;
-    cursor:pointer; display:block; margin-left:auto;
+    cursor:pointer; display:block; margin-left:auto; transition:.3s;
+}
+.modal-box button:hover { background:var(--light-accent); }
+
+/* Спеціальний стиль для "Пресцентру" */
+.press-modal h2 { color: #f00; text-shadow: 0 0 8px rgba(255,0,0,0.6); }
+.press-modal p { text-align: center; font-size: 20px; margin: 20px 0; }
+.press-modal .icon { font-size: 50px; text-align: center; display: block; margin: 10px 0; color: #f00; }
+
+/* Стиль для Структури */
+.structure-modal ul {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+.structure-modal li {
+    background: rgba(44, 119, 179, 0.1);
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    border-left: 5px solid var(--sbu-blue);
+    transition: background 0.2s;
+}
+.structure-modal li:hover {
+    background: rgba(44, 119, 179, 0.2);
 }
 
-/* Music panel */
+/* --- АДАПТИВНІСТЬ (MEDIA QUERIES) --- */
+@media (max-width: 1200px) {
+    .header { padding: 15px 20px; }
+    .header-left { font-size: 18px; }
+    .logo { width: 70px; }
+    .content { padding: 30px 40px; }
+}
+
+@media (max-width: 992px) {
+    .header-left { gap: 5px; }
+    .icons button, .icons a { display: none; } /* Приховуємо кнопки та іконки в хедері */
+    .header-left { width: 100%; justify-content: space-between; }
+    .burger { display: block; }
+
+    .menu { 
+        flex-direction: column; 
+        padding: 10px 20px; 
+        position: absolute; 
+        width: calc(100% - 40px);
+        top: 80px; 
+        left: 0; 
+        display: none; 
+        z-index: 999;
+        box-shadow: 0 8px 15px rgba(0,0,0,0.5);
+    }
+    .menu.show { display: flex; }
+    .menu a { padding: 8px 0; }
+    
+    .dropdown { width: 100%; }
+    .dropdown-menu { position: static; box-shadow: none; border: none; padding-left: 20px; }
+    .dropdown-menu a { padding: 4px 10px; }
+    .dropdown:hover .dropdown-menu { transform: translateY(0); opacity: 1; }
+    .header-left > a:last-child { margin-right: 0; }
+    .icons { display: flex; } /* Повертаємо icons для burger */
+}
+
+@media (max-width: 768px) {
+    .header-left { 
+        font-size: 16px; 
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+    }
+    .header-left > a:last-child { line-height: 1.2; }
+    .logo { width: 60px; }
+    .content { padding: 20px 20px; }
+    .sbu-info { padding: 20px; }
+    .sbu-info h2 { font-size: 26px; }
+    .sbu-info p { font-size: 16px; }
+    .christmas-tree { display: none; }
+}
+/* ===== FIX SNOW ===== */
+.snowflake {
+    position: fixed;
+    top: -20px;
+    color: #fff;
+    pointer-events: none;
+    user-select: none;
+    z-index: 99999;
+    animation-name: snow-fall;
+    animation-timing-function: linear;
+}
+
+@keyframes snow-fall {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(110vh);
+        opacity: 0.3;
+    }
+}
+
+/* ===== FIX MUSIC PANEL ===== */
 #musicPanel {
-    position:fixed; top:50%; right:-320px; transform:translateY(-50%);
-    width:300px; max-width:90%; border-radius:14px 0 0 14px;
-    padding:16px; z-index:100000; backdrop-filter:blur(18px) saturate(120%);
-    background: rgba(255,255,255,0.55); box-shadow:0 8px 30px rgba(14,30,37,0.12),0 2px 6px rgba(30,89,168,0.06);
-    transition:right 350ms cubic-bezier(.2,.9,.3,1), opacity 300ms; opacity:0;
-    border:1px solid rgba(255,255,255,0.55);
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 99999;
+    transform: translateY(150%);
+    transition: transform 0.35s ease;
 }
-#musicPanel.show { right:10px; opacity:1; }
-#musicPanel .panel-header { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:10px; }
-#musicPanel h3 { margin:0; font-size:16px; color:#0d2340; }
-#musicPanel .close-btn { background:transparent; border:none; font-size:18px; cursor:pointer; color:#0d2340; }
-.track-list { margin:8px 0 12px 0; max-height:180px; overflow:auto; padding-right:6px; }
-.track-item {
-    display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px;
-    border-radius:10px; cursor:pointer; transition:all .18s;
+
+#musicPanel.show {
+    transform: translateY(0);
 }
-.track-item:hover { transform:translateX(-4px); background:rgba(30,89,168,0.06); }
-.track-item.active { box-shadow:0 6px 18px rgba(30,89,168,0.12);
-    background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(250,250,250,0.6)); }
-.track-meta { display:flex; flex-direction:column; align-items:flex-start; gap:2px; }
-.track-title { font-weight:700;color:#0d2340;font-size:14px; }
-.track-artist { font-size:12px;color:#3b4b5a;opacity:0.8; }
-.player-controls { display:flex; align-items:center; gap:8px; justify-content:center; margin-top:6px; }
-.control-btn { background:linear-gradient(180deg,#fff,#f0f6ff); border:1px solid rgba(13,35,64,0.06);
-    padding:8px 10px; border-radius:10px; cursor:pointer; box-shadow:0 6px 14px rgba(13,35,64,0.06); transition:transform .12s; }
-.control-btn:active { transform:scale(.98); }
-.icon { font-size:16px; color:#0d2340; }
-.progress-row { display:flex; align-items:center; gap:8px; margin-top:10px; }
-.progress-row input[type=range] { -webkit-appearance:none; width:100%; height:6px; background:transparent; }
-input[type=range]::-webkit-slider-runnable-track { height:6px; background:linear-gradient(90deg,#1e59a8,#6fb3ff); border-radius:6px; }
-input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:14px;height:14px;border-radius:50%;background:#fff;border:2px solid #1e59a8;margin-top:-4px;box-shadow:0 4px 10px rgba(30,89,168,0.18); }
-.time-label { font-size:11px;color:#2b3a47;width:44px;text-align:center; }
+
 </style>
 </head>
 <body>
@@ -130,54 +301,98 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:14px;he
 <header class="header">
     <div class="header-left">
         <a href="#"><img src="https://i.postimg.cc/pdyjDF1n/sbu-removebg-preview.png" class="logo"></a>
-        <a href="#">СЛУЖБА БЕЗПЕКИ УКРАЇНИ</a>
+        <a href="#" id="headerTitle">СЛУЖБА БЕЗПЕКИ УКРАЇНИ</a>
+        <span class="christmas-tree">🎄</span>
+        <div class="icons mobile-visible" style="margin-left: auto;">
+             <button id="musicToggle" class="mobile-btn">Музика: Вкл</button>
+             <button class="lang-btn mobile-btn" onclick="toggleLang()">ENG</button>
+             <span class="burger" onclick="toggleMenu()">☰</span>
+        </div>
     </div>
 
-    <div class="icons">
+    <div class="icons desktop-visible">
         <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/145/145802.png"></a>
         <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/174/174855.png"></a>
         <a href="https://t.me/+_L963YuDI7hhNmIy" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png"></a>
         <a href="https://www.youtube.com/@moorechik_official" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png"></a>
-        <button id="musicToggle">Музика: Вкл</button>
-        <button id="openMusicPicker" style="background:#fff;border:1px solid rgba(13,35,64,0.08);padding:9px 12px;border-radius:6px;cursor:pointer;font-weight:600;">Вибрати музику</button>
-        <button class="lang-btn" onclick="toggleLang()">ENG</button>
-        <span class="burger" onclick="toggleMenu()">☰</span>
+       
+        <button id="openMusicPicker" >Вибрати музику</button>
+        
     </div>
 </header>
 
 <nav class="menu" id="navMenu">
     <div class="dropdown">
-        <a href="#">Про СБУ ▼</a>
+        <a href="#" id="menuAboutSBU">Про СБУ ▼</a>
         <div class="dropdown-menu">
-            <a href="#" onclick="openHistory()">Історія СБУ</a>
-            <a href="https://more58-ai.github.io/fbi/pidrozdil/index.html" target="_blank">Підрозділи</a>
-            <a href="#">Структура</a>
+            <a href="#" onclick="openHistory()" id="submenuHistory">Історія СБУ</a>
+            <a href="https://more58-ai.github.io/fbi/pidrozdil/index.html" target="_blank" id="submenuUnits">Підрозділи</a>
+            <a href="#" onclick="openStructure()" id="submenuStructure">Структура</a>
         </div>
     </div>
-    <a href="#" onclick="openPress()">Пресцентр</a>
-    <a href="https://more58-ai.github.io/fbi/tablet/index.html" target="_blank">Планшет</a>
-    <a href="https://more58-ai.github.io/fbi/sklad/index.html" target="_blank">Старший особовий склад</a>
+    <a href="#" onclick="openPress()" id="menuPress">Пресцентр</a>
+    <a href="https://more58-ai.github.io/fbi/tablet/index.html" target="_blank" id="menuTablet">Планшет</a>
+    <a href="https://more58-ai.github.io/fbi/sklad/index.html" target="_blank" id="menuStaff">Старший особовий склад</a>
 </nav>
 
+
 <section class="content" id="mainText">
-    <h1>Долучайся до команди ЦСО «А» СБУ</h1>
-    <p>Приєднуйся до одного з кращих спецпідрозділів України!</p>
+    <h1 id="mainTitle">Служба Безпеки України: Щит Держави</h1>
+    <div class="sbu-info">
+        <h2 id="sbuMissionTitle">Наша Місія: Безпека та Захист</h2>
+        <p id="sbuParagraph1">Служба Безпеки України — це не просто державна установа, це <span class="highlight" data-translate-key="p1_key_1">ключовий інститут національної безпеки</span>, покликаний захищати суверенітет, конституційний лад, територіальну цілісність та державні інтереси України. Ми стоїмо на сторожі миру та спокою наших громадян, протидіючи найскладнішим внутрішнім і зовнішнім загрозам.</p>
+
+        <p id="sbuParagraph2">Наші основні напрямки діяльності охоплюють:
+            <br>✅ <span class="highlight" data-translate-key="p2_key_1">Контррозвідувальна діяльність</span>: Виявлення та нейтралізація іноземних розвідувальних мереж, які намагаються підірвати державність.
+            <br>✅ <span class="highlight" data-translate-key="p2_key_2">Боротьба з тероризмом</span>: Запобігання терористичним актам та ліквідація диверсійно-розвідувальних груп.
+            <br>✅ <span class="highlight" data-translate-key="p2_key_3">Кібербезпека</span>: Захист критичної інфраструктури та державного інформаційного простору від кібератак.
+            <br>✅ <span class="highlight" data-translate-key="p2_key_4">Захист економіки</span>: Протидія корупції та контрабанді, що загрожує фінансовій стабільності країни.
+        </p>
+
+        <p id="sbuParagraph3">СБУ щоденно доводить свою <span class="highlight" data-translate-key="p3_key_1">відданість принципам незалежності та свободи</span>, забезпечуючи надійний тил для всіх захисників України. Наша сила — у професіоналізмі, патріотизмі та вірності українському народові. <span class="highlight" data-translate-key="p3_key_2">Слава Україні!</span></p>
+    </div>
 </section>
 
-<footer>Телефон довіри: +xxx xx xxx xx xx</footer>
+
 
 <audio id="bgMusic" autoplay loop>
     <source src="https://raw.githubusercontent.com/More58-ai/fbi/main/Wham!%20-%20Last%20Christmas%20(Official%20Video).mp3" type="audio/mpeg">
 </audio>
 
-<div id="historyModal">
+<div id="historyModal" class="modal">
     <div class="modal-box">
-        <h2>Історія Служби Безпеки України</h2>
-        <p>Служба безпеки України була створена <b>20 вересня 1991 року</b> після ухвалення Закону України «Про Службу безпеки України». Вона стала правонаступником структур КДБ УРСР, але отримала нову модель державної безпеки незалежної України.</p>
-        <p>Головні завдання СБУ включають захист <b>суверенітету</b>, територіальної цілісності, боротьбу з тероризмом, контррозвідувальну діяльність та охорону державної таємниці.</p>
-        <p>Після 2014 року СБУ відіграє ключову роль у боротьбі з російською агресією: протидія ДРГ, кібератакам, терористичним загрозам та забезпечення безпеки військових операцій.</p>
-        <p>Сьогодні СБУ проходить модернізацію, адаптуючи свою структуру та методи роботи до стандартів НАТО.</p>
-        <button onclick="closeHistory()">Закрити</button>
+        <h2 data-lang-key="historyTitle">Історія Служби Безпеки України</h2>
+        <p data-lang-key="historyP1">Служба безпеки України була створена <b data-lang-key="historyDate">20 вересня 1991 року</b> після ухвалення Закону України «Про Службу безпеки України». Вона стала правонаступником структур КДБ УРСР, але отримала нову модель державної безпеки незалежної України.</p>
+        <p data-lang-key="historyP2">Головні завдання СБУ включають захист <b data-lang-key="historyTasks">суверенітету</b>, територіальної цілісності, боротьбу з тероризмом, контррозвідувальну діяльність та охорону державної таємниці.</p>
+        <p data-lang-key="historyP3">Після 2014 року СБУ відіграє ключову роль у боротьбі з російською агресією: протидія ДРГ, кібератакам, терористичним загрозам та забезпечення безпеки військових операцій.</p>
+        <p data-lang-key="historyP4">Сьогодні СБУ проходить модернізацію, адаптуючи свою структуру та методи роботи до стандартів НАТО.</p>
+        <button onclick="closeHistory()" data-lang-key="closeButton">Закрити</button>
+    </div>
+</div>
+
+<div id="pressModal" class="modal">
+    <div class="modal-box press-modal">
+        <span class="icon">📰</span>
+        <h2 data-lang-key="pressTitle">Пресцентр СБУ</h2>
+        <p data-lang-key="pressMessage">На жаль, наразі у цьому розділі <b style="color: #f00;">новин ще немає</b>. Слідкуйте за офіційними джерелами!</p>
+        <button onclick="closePress()" data-lang-key="closeButton">Закрити</button>
+    </div>
+</div>
+
+<div id="structureModal" class="modal">
+    <div class="modal-box structure-modal">
+        <h2 data-lang-key="structureTitle">Структура Служби Безпеки України</h2>
+        <p data-lang-key="structureIntro">СБУ має чітку ієрархічну структуру, спрямовану на ефективне виконання завдань національної безпеки:</p>
+        <ul data-lang-key="structureList">
+            <li>Центральне управління (ЦУ)</li>
+            <li>Регіональні органи (Обласні Управління СБУ)</li>
+            <li>Підрозділи по боротьбі з корупцією та організованою злочинністю</li>
+            <li>Контррозвідка</li>
+            <li>Головне управління по боротьбі з тероризмом (ЦСО «А»)</li>
+            <li>Кібербезпека</li>
+        </ul>
+        <p data-lang-key="structureOutro">Ця структура забезпечує оперативність та комплексний підхід до захисту держави.</p>
+        <button onclick="closeStructure()" data-lang-key="closeButton">Закрити</button>
     </div>
 </div>
 
@@ -192,7 +407,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:14px;he
             <div class="track-title">Last Christmas</div>
             <div class="track-artist">Wham!</div>
         </div>
-        <div style="font-size:12px;color:#2b3a47;">4:38</div>
+        <div style="font-size:12px;color:#a0a0a0;">4:38</div>
     </div>
 
     <div class="track-item" data-src="https://raw.githubusercontent.com/More58-ai/fbi/main/DZIDZIO%20feat.%20Вова%20зі%20Львова%20-%20Павук.mp3">
@@ -200,7 +415,7 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:14px;he
             <div class="track-title">Павук</div>
             <div class="track-artist">DZIDZIO feat. Вова зі Львова</div>
         </div>
-        <div style="font-size:12px;color:#2b3a47;">3:02</div>
+        <div style="font-size:12px;color:#a0a0a0;">3:02</div>
     </div>
 
     <div class="track-item" data-src="https://raw.githubusercontent.com/More58-ai/fbi/main/Sabrina%20Carpenter%20-%20Espresso%20%5BeVli-tstM5E%5D.mp3">
@@ -208,12 +423,12 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:14px;he
             <div class="track-title">Espresso</div>
             <div class="track-artist">Sabrina Carpenter</div>
         </div>
-        <div style="font-size:12px;color:#2b3a47;">3:20</div>
+        <div style="font-size:12px;color:#86cef0;">3:20</div>
     </div>
 </div>
 
 
-    <div style="border-top:1px solid rgba(13,35,64,0.04);padding-top:10px;">
+    <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:10px;">
         <div class="player-controls">
             <button class="control-btn" id="stopBtn">⏹</button>
             <button class="control-btn" id="prevBtn" disabled>⏮</button>
@@ -229,28 +444,169 @@ input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:14px;he
 </div>
 
 <script>
-/* Menu toggle for mobile */
-function toggleMenu(){ document.getElementById("navMenu").classList.toggle("show"); }
-
-/* Language toggle */
-let currentLang="UA";
-function toggleLang(){
-    const t=document.querySelector('#mainText h1');
-    const p=document.querySelector('#mainText p');
-    if(currentLang==="UA"){
-        t.textContent="Join the SSU Special Operations Team";
-        p.textContent="Become part of one of the best units in Ukraine!";
-        document.querySelector('.lang-btn').textContent="UA";
-        currentLang="ENG";
-    } else {
-        t.textContent="Долучайся до команди ЦСО «А» СБУ";
-        p.textContent="Приєднуйся до одного з кращих спецпідрозділів України!";
-        document.querySelector('.lang-btn').textContent="ENG";
-        currentLang="UA";
+// --- МАСИВ З ПЕРЕКЛАДАМИ ---
+const translations = {
+    'UA': {
+        headerTitle: 'СЛУЖБА БЕЗПЕКИ УКРАЇНИ',
+        menuAboutSBU: 'Про СБУ ▼',
+        submenuHistory: 'Історія СБУ',
+        submenuUnits: 'Підрозділи',
+        submenuStructure: 'Структура',
+        menuPress: 'Пресцентр',
+        menuTablet: 'Планшет',
+        menuStaff: 'Старший особовий склад',
+        mainTitle: 'Служба Безпеки України: Щит Держави',
+        sbuMissionTitle: 'Наша Місія: Безпека та Захист',
+        p1_text: 'Служба Безпеки України — це не просто державна установа, це {p1_key_1}, покликаний захищати суверенітет, конституційний лад, територіальну цілісність та державні інтереси України. Ми стоїмо на сторожі миру та спокою наших громадян, протидіючи найскладнішим внутрішнім і зовнішнім загрозам.',
+        p1_key_1: 'ключовий інститут національної безпеки',
+        p2_text: 'Наші основні напрямки діяльності охоплюють: <br>✅ {p2_key_1}: Виявлення та нейтралізація іноземних розвідувальних мереж, які намагаються підірвати державність.<br>✅ {p2_key_2}: Запобігання терористичним актам та ліквідація диверсійно-розвідувальних груп.<br>✅ {p2_key_3}: Захист критичної інфраструктури та державного інформаційного простору від кібератак.<br>✅ {p2_key_4}: Протидія корупції та контрабанді, що загрожує фінансовій стабільності країни.',
+        p2_key_1: 'Контррозвідувальна діяльність',
+        p2_key_2: 'Боротьба з тероризмом',
+        p2_key_3: 'Кібербезпека',
+        p2_key_4: 'Захист економіки',
+        p3_text: 'СБУ щоденно доводить свою {p3_key_1}, забезпечуючи надійний тил для всіх захисників України. Наша сила — у професіоналізмі, патріотизмі та вірності українському народові. {p3_key_2}',
+        p3_key_1: 'відданість принципам незалежності та свободи',
+        p3_key_2: 'Слава Україні!',
+        
+        // Модалки
+        historyTitle: 'Історія Служби Безпеки України',
+        historyP1: 'Служба безпеки України була створена {historyDate} після ухвалення Закону України «Про Службу безпеки України». Вона стала правонаступником структур КДБ УРСР, але отримала нову модель державної безпеки незалежної України.',
+        historyDate: '20 вересня 1991 року',
+        historyP2: 'Головні завдання СБУ включають захист {historyTasks}, територіальної цілісності, боротьбу з тероризмом, контррозвідувальну діяльність та охорону державної таємниці.',
+        historyTasks: 'суверенітету',
+        historyP3: 'Після 2014 року СБУ відіграє ключову роль у боротьбі з російською агресією: протидія ДРГ, кібератакам, терористичним загрозам та забезпечення безпеки військових операцій.',
+        historyP4: 'Сьогодні СБУ проходить модернізацію, адаптуючи свою структуру та методи роботи до стандартів НАТО.',
+        pressTitle: 'Пресцентр СБУ',
+        pressMessage: 'На жаль, наразі у цьому розділі новин ще немає. Слідкуйте за офіційними джерелами!',
+        structureTitle: 'Структура Служби Безпеки України',
+        structureIntro: 'СБУ має чітку ієрархічну структуру, спрямовану на ефективне виконання завдань національної безпеки:',
+        structureList: '<li>Центральне управління (ЦУ)</li><li>Регіональні органи (Обласні Управління СБУ)</li><li>Підрозділи по боротьбі з корупцією та організованою злочинністю</li><li>Контррозвідка</li><li>Головне управління по боротьбі з тероризмом (ЦСО «А»)</li><li>Кібербезпека</li>',
+        structureOutro: 'Ця структура забезпечує оперативність та комплексний підхід до захисту держави.',
+        closeButton: 'Закрити',
+    },
+    'ENG': {
+        headerTitle: 'SECURITY SERVICE OF UKRAINE',
+        menuAboutSBU: 'About SSU ▼',
+        submenuHistory: 'History of SSU',
+        submenuUnits: 'Units',
+        submenuStructure: 'Structure',
+        menuPress: 'Press Center',
+        menuTablet: 'Tablet',
+        menuStaff: 'Senior Staff',
+        mainTitle: 'Security Service of Ukraine: The State’s Shield',
+        sbuMissionTitle: 'Our Mission: Security and Protection',
+        p1_text: 'The Security Service of Ukraine is not just a state institution, it is the {p1_key_1}, designed to protect the sovereignty, constitutional order, territorial integrity, and state interests of Ukraine. We stand guard over the peace and tranquility of our citizens, counteracting the most complex internal and external threats.',
+        p1_key_1: 'key institution of national security',
+        p2_text: 'Our main areas of activity include: <br>✅ {p2_key_1}: Detection and neutralization of foreign intelligence networks attempting to undermine statehood.<br>✅ {p2_key_2}: Prevention of terrorist acts and elimination of sabotage and reconnaissance groups.<br>✅ {p2_key_3}: Protection of critical infrastructure and state information space from cyber attacks.<br>✅ {p2_key_4}: Countering corruption and smuggling that threaten the financial stability of the country.',
+        p2_key_1: 'Counterintelligence activities',
+        p2_key_2: 'Combating terrorism',
+        p2_key_3: 'Cyber Security',
+        p2_key_4: 'Protection of the economy',
+        p3_text: 'The SSU daily proves its {p3_key_1}, providing a reliable rear for all defenders of Ukraine. Our strength lies in professionalism, patriotism, and loyalty to the Ukrainian people. {p3_key_2}',
+        p3_key_1: 'commitment to the principles of independence and freedom',
+        p3_key_2: 'Glory to Ukraine!',
+       
+        // Модалки
+        historyTitle: 'History of the Security Service of Ukraine',
+        historyP1: 'The Security Service of Ukraine was established on {historyDate} after the adoption of the Law of Ukraine "On the Security Service of Ukraine". It became the successor to the structures of the KGB of the Ukrainian SSR, but received a new model of state security for independent Ukraine.',
+        historyDate: 'September 20, 1991',
+        historyP2: 'The main tasks of the SSU include the protection of {historyTasks}, territorial integrity, the fight against terrorism, counterintelligence activities, and the protection of state secrets.',
+        historyTasks: 'sovereignty',
+        historyP3: 'After 2014, the SSU plays a key role in the fight against Russian aggression: counteracting DRGs, cyberattacks, terrorist threats, and ensuring the security of military operations.',
+        historyP4: 'Today, the SSU is undergoing modernization, adapting its structure and methods of work to NATO standards.',
+        pressTitle: 'SSU Press Center',
+        pressMessage: 'Unfortunately, there are currently no news updates in this section. Follow official sources!',
+        structureTitle: 'Structure of the Security Service of Ukraine',
+        structureIntro: 'The SSU has a clear hierarchical structure aimed at effective execution of national security tasks:',
+        structureList: '<li>Central Directorate (CD)</li><li>Regional Bodies (SSU Regional Departments)</li><li>Anti-Corruption and Organized Crime Units</li><li>Counterintelligence</li><li>Main Counter-Terrorism Directorate (CSO "A")</li><li>Cyber Security</li>',
+        structureOutro: 'This structure ensures efficiency and a comprehensive approach to protecting the state.',
+        closeButton: 'Close',
     }
+};
+
+let currentLang = 'UA';
+
+// --- ФУНКЦІЯ ПЕРЕКЛАДУ (ГОЛОВНА) ---
+function translateElement(key, lang) {
+    let text = translations[lang][key];
+    
+    // Заміна виділених ключових слів у тексті
+    for (const subKey in translations[lang]) {
+        if (subKey.startsWith(key.split('_')[0] + '_key_') || subKey.startsWith('history')) {
+            const regex = new RegExp('{' + subKey + '}', 'g');
+            const highlightedText = `<span class="highlight" data-translate-key="${subKey}">${translations[lang][subKey]}</span>`;
+            
+            // Спеціальна обробка для historyDate, historyTasks
+            if (subKey === 'historyDate' || subKey === 'historyTasks') {
+                text = text.replace(regex, `<b data-lang-key="${subKey}">${translations[lang][subKey]}</b>`);
+            } else {
+                text = text.replace(regex, highlightedText);
+            }
+        }
+    }
+
+    return text;
 }
 
-/* Snowflakes */
+function applyTranslation(lang) {
+    // 1. Переклад статичних елементів
+    document.getElementById('headerTitle').textContent = translations[lang].headerTitle;
+    document.getElementById('menuAboutSBU').textContent = translations[lang].menuAboutSBU;
+    document.getElementById('submenuHistory').textContent = translations[lang].submenuHistory;
+    document.getElementById('submenuUnits').textContent = translations[lang].submenuUnits;
+    document.getElementById('submenuStructure').textContent = translations[lang].submenuStructure;
+    document.getElementById('menuPress').textContent = translations[lang].menuPress;
+    document.getElementById('menuTablet').textContent = translations[lang].menuTablet;
+    document.getElementById('menuStaff').textContent = translations[lang].menuStaff;
+    document.getElementById('footerText').textContent = translations[lang].footerText;
+    
+    // 2. Переклад основного контенту (з ключовими словами)
+    document.getElementById('mainTitle').textContent = translations[lang].mainTitle;
+    document.getElementById('sbuMissionTitle').textContent = translations[lang].sbuMissionTitle;
+
+    document.getElementById('sbuParagraph1').innerHTML = translateElement('p1_text', lang);
+    document.getElementById('sbuParagraph2').innerHTML = translateElement('p2_text', lang);
+    document.getElementById('sbuParagraph3').innerHTML = translateElement('p3_text', lang);
+    
+    // 3. Переклад модальних вікон (використовуючи data-lang-key)
+    document.querySelectorAll('[data-lang-key]').forEach(el => {
+        const key = el.getAttribute('data-lang-key');
+        if (translations[lang][key]) {
+            // Спеціальна обробка для структури, яка є списком <ul>
+            if (key === 'structureList') {
+                 el.innerHTML = translations[lang][key];
+            } else {
+                 el.innerHTML = translateElement(key, lang); 
+            }
+           
+        }
+    });
+}
+
+function toggleLang(){
+    currentLang = (currentLang === 'UA') ? 'ENG' : 'UA';
+    const btn = document.querySelector('.lang-btn');
+    applyTranslation(currentLang);
+    btn.textContent = (currentLang === 'UA') ? 'ENG' : 'UA';
+}
+
+// --- ФУНКЦІЇ МОДАЛЬНИХ ВІКОН ---
+
+function openHistory(){ document.getElementById("historyModal").style.display="flex"; }
+function closeHistory(){ document.getElementById("historyModal").style.display="none"; }
+
+// Нова модалка для Пресцентру
+function openPress(){ document.getElementById("pressModal").style.display="flex"; }
+function closePress(){ document.getElementById("pressModal").style.display="none"; }
+
+// Нова модалка для Структури
+function openStructure(){ document.getElementById("structureModal").style.display="flex"; }
+function closeStructure(){ document.getElementById("structureModal").style.display="none"; }
+
+
+/* Решта функцій (Menu toggle, Snowflakes, Music controls) без змін */
+function toggleMenu(){ document.getElementById("navMenu").classList.toggle("show"); }
+
 function createSnowflake() {
     const snow = document.createElement("div");
     snow.classList.add("snowflake");
@@ -263,18 +619,26 @@ function createSnowflake() {
 }
 setInterval(createSnowflake,120);
 
-/* Music controls */
 const audio=document.getElementById("bgMusic"); audio.volume=0.3;
-document.getElementById("musicToggle").onclick=function(){
-    if(audio.paused){ audio.play(); this.textContent="Музыка: Вкл"; } 
-    else { audio.pause(); this.textContent="Музыка: Выкл"; }
+const musicToggleBtn = document.getElementById("musicToggle");
+
+audio.addEventListener('loadeddata', () => {
+    if (audio.autoplay) {
+        musicToggleBtn.textContent="Музика: Вкл";
+    }
+});
+
+musicToggleBtn.onclick=function(){
+    if(audio.paused){ 
+        audio.play().catch(e => console.log('Autoplay error:', e)); 
+        this.textContent="Музика: Вкл"; 
+    } 
+    else { 
+        audio.pause(); 
+        this.textContent="Музика: Викл"; 
+    }
 };
 
-/* History modal */
-function openHistory(){ document.getElementById("historyModal").style.display="flex"; }
-function closeHistory(){ document.getElementById("historyModal").style.display="none"; }
-
-/* Music panel */
 const openPickerBtn=document.getElementById('openMusicPicker');
 const musicPanel=document.getElementById('musicPanel');
 const closePickerBtn=document.getElementById('closeMusicPicker');
@@ -285,11 +649,9 @@ const nextBtn=document.getElementById('nextBtn');
 const seekBar=document.getElementById('seekBar');
 const currentTimeLabel=document.getElementById('currentTime');
 const durationLabel=document.getElementById('durationTime');
-const playIcon=playPauseBtn;
 const trackList=document.getElementById('trackList');
 let activeTrackItem=document.querySelector('.track-item.active');
 
-/* Panel toggle */
 openPickerBtn.addEventListener('click',()=>{ musicPanel.classList.toggle('show'); });
 closePickerBtn.addEventListener('click',()=>{ musicPanel.classList.remove('show'); });
 
@@ -305,17 +667,15 @@ trackList.addEventListener('click',(e)=>{
     while(audio.firstChild) audio.removeChild(audio.firstChild);
     const s=document.createElement('source');
     s.src=src; s.type='audio/mpeg';
-    audio.appendChild(s); audio.load(); audio.play();
+    audio.appendChild(s); audio.load(); audio.play().catch(e => console.log('Play error:', e));
 });
 
-/* Play/pause */
 function updatePlayIcon(){ playPauseBtn.textContent=audio.paused?'▶️':'⏸'; }
-playPauseBtn.addEventListener('click',()=>{ audio.paused?audio.play():audio.pause(); updatePlayIcon(); });
+playPauseBtn.addEventListener('click',()=>{ audio.paused?audio.play().catch(e => console.log('Play error:', e)):audio.pause(); updatePlayIcon(); });
 stopBtn.addEventListener('click',()=>{ audio.pause(); audio.currentTime=0; updatePlayIcon(); });
-nextBtn.addEventListener('click',()=>{ audio.currentTime=0; audio.play(); updatePlayIcon(); });
-prevBtn.addEventListener('click',()=>{ audio.currentTime=0; audio.play(); updatePlayIcon(); });
+nextBtn.addEventListener('click',()=>{ audio.currentTime=0; audio.play().catch(e => console.log('Play error:', e)); updatePlayIcon(); });
+prevBtn.addEventListener('click',()=>{ audio.currentTime=0; audio.play().catch(e => console.log('Play error:', e)); updatePlayIcon(); });
 
-/* Seek bar */
 audio.addEventListener('timeupdate',()=>{
     const dur=audio.duration||0, cur=audio.currentTime||0;
     seekBar.value=(cur/dur)*100||0;
