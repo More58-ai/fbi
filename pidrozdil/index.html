@@ -3,225 +3,355 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Підрозділи СБУ</title>
+<title>Підрозділи СБУ - Зима</title>
 
 <style>
+    :root {
+        --gold-color: #f4d35e;
+        --gold-glow: rgba(244, 211, 94, 0.5);
+        --bg-dark: #051024;
+        --bg-darker: #020c1b;
+        --card-bg: rgba(20, 30, 50, 0.5);
+        --text-muted: #aebad4;
+    }
+
     body {
         margin: 0;
         font-family: "Segoe UI", Arial, sans-serif;
-        background: linear-gradient(180deg, #0b1d35, #071628);
+        /* Більш глибокий, холодний нічний градієнт */
+        background: linear-gradient(180deg, var(--bg-dark), var(--bg-darker));
         color: #ffffff;
+        overflow-x: hidden; /* Щоб сніг не розширював сторінку */
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* --- СНІГ --- */
+    #snow-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none; /* Щоб сніг не заважав клікати */
+        z-index: 1;
+    }
+
+    .snowflake {
+        position: absolute;
+        top: -10px;
+        background: white;
+        border-radius: 50%;
+        opacity: 0.8;
+        pointer-events: none;
+        animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+        to {
+            transform: translateY(105vh);
+        }
+    }
+    /* ---------------- */
+
+    .main-content {
+        flex: 1;
+        position: relative;
+        z-index: 10; /* Контент поверх снігу */
     }
 
     .top-logo {
         text-align: center;
-        padding: 35px 0 5px;
-        animation: fadeIn 1s ease-in-out forwards;
+        padding: 40px 0 10px;
+        animation: fadeInDown 1s ease-out;
     }
 
     .top-logo img {
-        height: 135px;
-        filter: drop-shadow(0 0 18px rgba(255,215,128,0.25));
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(-20px); }
-        to { opacity: 1; transform: translateY(0); }
+        height: 140px;
+        /* Додано холодне блакитне світіння до логотипу */
+        filter: drop-shadow(0 0 25px rgba(100, 180, 255, 0.3));
     }
 
     h1 {
         text-align: center;
-        font-size: 34px;
-        color: #f4d35e;
-        letter-spacing: 1.5px;
-        text-shadow: 0 0 10px rgba(244,211,94,0.25);
-        margin-top: 8px;
-        opacity: 0;
-        animation: fadeIn 1s ease-in-out 0.2s forwards;
+        font-size: 36px;
+        color: var(--gold-color);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-shadow: 0 0 15px var(--gold-glow);
+        margin-top: 15px;
+        animation: fadeInDown 1s ease-out 0.2s backwards;
     }
 
     .underline {
-        width: 130px;
-        height: 3px;
-        background: #f4d35e;
-        margin: 18px auto 45px;
-        border-radius: 3px;
-        box-shadow: 0 0 12px rgba(244,211,94,0.5);
-        opacity: 0;
-        animation: fadeIn 1s ease-in-out 0.3s forwards;
+        width: 150px;
+        height: 4px;
+        background: var(--gold-color);
+        margin: 20px auto 60px;
+        border-radius: 4px;
+        box-shadow: 0 0 20px var(--gold-glow);
+        animation: widthGrow 1s ease-out 0.4s backwards;
     }
 
     .container {
         max-width: 1100px;
         margin: auto;
-        padding: 0 20px 60px;
+        padding: 0 20px 80px;
     }
 
     .grid {
         display: flex;
         justify-content: center;
-        gap: 35px;
+        gap: 40px;
         flex-wrap: wrap;
     }
 
-    .card {
-        background: rgba(255,255,255,0.05);
-        padding: 32px 22px;
-        border-radius: 14px;
+    /* --- НОВИЙ СТИЛЬ КАРТОК --- */
+    .card-placeholder {
+        background: var(--card-bg);
+        padding: 40px 30px;
+        border-radius: 18px;
         text-align: center;
-        width: 270px;
-        cursor: pointer;
-        border: 1px solid rgba(244,211,94,0.25);
-        transition: 0.25s;
-        backdrop-filter: blur(6px);
-        box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        width: 260px;
+        position: relative;
+        cursor: pointer; /* Додано курсор вказівника */
+        
+        /* Основна підсвітка */
+        border: 2px solid rgba(244, 211, 94, 0.3);
+        box-shadow: 0 0 25px rgba(244, 211, 94, 0.15), inset 0 0 30px rgba(244, 211, 94, 0.05);
+        backdrop-filter: blur(10px);
+        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        animation: fadeInUp 0.8s ease-out backwards;
     }
 
-    .card:hover {
-        transform: translateY(-8px);
-        border-color: #f4d35e;
-        box-shadow: 0 0 25px rgba(244,211,94,0.3);
-        background: rgba(255,255,255,0.08);
+    /* Ефект при наведенні */
+    .card-placeholder:hover {
+        transform: translateY(-12px) scale(1.02);
+        border-color: var(--gold-color);
+        box-shadow: 0 0 50px rgba(244, 211, 94, 0.5), inset 0 0 30px rgba(244, 211, 94, 0.2);
+        background: rgba(30, 45, 70, 0.6);
     }
 
-    .img-box {
-        background: radial-gradient(circle at center, rgba(244,211,94,0.2), transparent 70%);
-        border-radius: 14px;
-        padding: 18px;
+    .card-placeholder h3 {
+        font-size: 24px;
+        margin: 0 0 30px 0;
+        color: var(--gold-color);
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        /* Сильніша текстова підсвітка */
+        text-shadow: 0 0 20px var(--gold-glow);
+    }
+
+    .staff-info {
+        text-align: left;
+        border-top: 1px solid rgba(244, 211, 94, 0.2);
+        padding-top: 20px;
+    }
+
+    .staff-row {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 15px;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        font-size: 15px;
     }
 
-    .img-box img {
-        width: 130px;
-        height: 130px;
-        object-fit: contain;
-        filter: drop-shadow(0 0 15px rgba(0,0,0,0.35));
+    .staff-title {
+        color: var(--text-muted);
+        font-weight: 500;
     }
 
-    .card h3 {
-        font-size: 18px;
-        margin: 0;
-        padding-top: 5px;
-        color: #f4d35e;
-        text-shadow: 0 0 8px rgba(244,211,94,0.35);
+    .staff-name {
+        color: #fff;
+        font-weight: 600;
+        text-shadow: 0 0 5px rgba(255,255,255,0.3);
     }
 
-    /* MODAL WINDOW */
-    .modal-bg {
-        display: none;
+    /* --- МОДАЛЬНЕ ВІКНО (Нові стилі) --- */
+    .modal-overlay {
+        display: none; /* Приховано за замовчуванням */
         position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.7);
-        backdrop-filter: blur(4px);
+        z-index: 100; /* Поверх усього, включаючи сніг */
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.7); /* Напівпрозорий чорний фон */
+        backdrop-filter: blur(5px); /* Ефект розмиття фону */
         justify-content: center;
         align-items: center;
-        z-index: 999;
-    }
-
-    .modal {
-        background: #0c1a30;
-        padding: 25px 30px;
-        border-radius: 16px;
-        width: 360px;
-        text-align: center;
-        border: 1px solid #f4d35e;
-        box-shadow: 0 0 25px rgba(244,211,94,0.4);
         animation: fadeInModal 0.3s ease-out;
     }
 
-    @keyframes fadeInModal {
-        from { opacity: 0; transform: scale(0.8); }
-        to { opacity: 1; transform: scale(1); }
+    .modal-content {
+        background: linear-gradient(135deg, var(--bg-dark), #1a2a40);
+        border: 2px solid var(--gold-color);
+        box-shadow: 0 0 30px var(--gold-glow);
+        border-radius: 18px;
+        padding: 30px;
+        max-width: 500px;
+        width: 90%;
+        text-align: center;
+        position: relative;
     }
 
-    .modal img {
-        width: 110px;
-        margin-bottom: 12px;
-    }
-
-    .modal p {
-        font-size: 15px;
-        color: #d8e1f8;
-        line-height: 1.35em;
-        margin-bottom: 18px;
-    }
-
-    .close-btn {
-        background: #f4d35e;
-        border: none;
-        padding: 8px 20px;
-        border-radius: 8px;
-        cursor: pointer;
+    .close-modal-btn {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        color: var(--gold-color);
+        font-size: 28px;
         font-weight: bold;
-        color: #0b1d35;
-        transition: .2s;
+        cursor: pointer;
+        transition: color 0.3s;
     }
 
-    .close-btn:hover {
-        background: #ffe894;
+    .close-modal-btn:hover {
+        color: #fff;
+        text-shadow: 0 0 10px var(--gold-glow);
+    }
+
+    #modal-title {
+        color: var(--gold-color);
+        font-size: 24px;
+        margin-top: 0;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        text-shadow: 0 0 10px var(--gold-glow);
+    }
+
+    #modal-description {
+        color: #d8e1f8;
+        line-height: 1.6;
+        font-size: 16px;
+    }
+
+    /* Анімації появи */
+    @keyframes fadeInDown {
+        from { opacity: 0; transform: translateY(-30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+     @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes widthGrow {
+        from { width: 0; opacity: 0; }
+        to { width: 150px; opacity: 1; }
+    }
+    @keyframes fadeInModal {
+        from { opacity: 0; }
+        to { opacity: 1; }
     }
 
     footer {
         text-align: center;
-        padding: 22px;
-        background:#061323;
-        color: #96a8c9;
+        padding: 25px;
+        background: #030a14;
+        color: var(--text-muted);
         font-size: 14px;
-        border-top: 2px solid #213b63;
+        border-top: 1px solid rgba(244, 211, 94, 0.1);
+        position: relative;
+        z-index: 10;
     }
 </style>
 </head>
 
 <body>
 
-<div class="top-logo">
-    <img src="https://i.postimg.cc/pdyjDF1n/sbu-removebg-preview.png" alt="СБУ">
-</div>
+<div id="snow-container"></div>
 
-<h1>Підрозділи Служби безпеки України</h1>
-<div class="underline"></div>
+<div class="main-content">
+    <div class="top-logo">
+        <img src="https://i.postimg.cc/pdyjDF1n/sbu-removebg-preview.png" alt="СБУ">
+    </div>
 
-<div class="container">
-    <div class="grid">
+    <h1>Підрозділи</h1>
+    <div class="underline"></div>
 
-        <div class="card" onclick="openModal('dkib')">
-            <div class="img-box"><img src="https://i.postimg.cc/9XRNVxCj/DKIB.jpg"></div>
-            <h3>Департамент кібербезпеки</h3>
+    <div class="container">
+        <div class="grid">
+
+            <div class="card-placeholder" style="animation-delay: 0.1s" onclick="openModal('nasb')">
+                <h3>НАСБ(Навчальна академія СБУ) </h3>
+                <div class="staff-info">
+                    <div class="staff-row">
+                        <span class="staff-title">Керівник:</span>
+                        <span class="staff-name">Артем Міллер</span>
+                    </div>
+                    <div class="staff-row">
+                        <span class="staff-title">Заступник:</span>
+                        <span class="staff-name">Вакантно</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-placeholder" style="animation-delay: 0.2s" onclick="openModal('csoa')">
+                <h3>ЦСО"А"(Центр спеціальних операцій Альфа)</h3>
+                <div class="staff-info">
+                    <div class="staff-row">
+                        <span class="staff-title">Керівник:</span>
+                        <span class="staff-name">Роман Басистий</span>
+                    </div>
+                    <div class="staff-row">
+                        <span class="staff-title">Заступник:</span>
+                        <span class="staff-name">Вакантно</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-placeholder" style="animation-delay: 0.3s" onclick="openModal('cu')">
+                <h3>ЦУ(Центральне управління)</h3>
+                <div class="staff-info">
+                    <div class="staff-row">
+                        <span class="staff-title">Керівник:</span>
+                        <span class="staff-name">Вакантно</span>
+                    </div>
+                    <div class="staff-row">
+                        <span class="staff-title">Заступник:</span>
+                        <span class="staff-name">Вакантно</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-placeholder" style="animation-delay: 0.4s" onclick="openModal('acpsb')">
+                <h3>АЦПСБ<br>(Антитерор. центр при СБУ)</h3></br>
+                <div class="staff-info">
+                    <div class="staff-row">
+                        <span class="staff-title">Керівник:</span>
+                        <span class="staff-name">Вакантно</span>
+                    </div>
+                    <div class="staff-row">
+                        <span class="staff-title">Заступник:</span>
+                        <span class="staff-name">Вакантно</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-placeholder" style="animation-delay: 0.5s">
+                <h3>Скоро буде</h3>
+                <div class="staff-info">
+                    <div class="staff-row">
+                        <span class="staff-title">Керівник:</span>
+                        <span class="staff-name">Призначення...</span>
+                    </div>
+                    <div class="staff-row">
+                        <span class="staff-title">Заступник:</span>
+                        <span class="staff-name">Вакантно</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
-
-        <div class="card" onclick="openModal('dvc')">
-            <div class="img-box"><img src="https://i.postimg.cc/8ccGPLpj/Departament-vijskovoi-kontrrozvidki.jpg"></div>
-            <h3>Департамент військової контррозвідки</h3>
-        </div>
-
-        <div class="card" onclick="openModal('atc')">
-            <div class="img-box"><img src="https://i.postimg.cc/xjZD3JT9/Antiteroristicnij-centr-pri-SBU.png"></div>
-            <h3>Антитерористичний центр при СБУ</h3>
-        </div>
-
-        <div class="card" onclick="openModal('uk')">
-            <div class="img-box"><img src="https://i.postimg.cc/jqNRg1Kw/Upr-k-removebg-preview.png"></div>
-            <h3>Управління «К»</h3>
-        </div>
-
-        <div class="card" onclick="openModal('alfa')">
-            <div class="img-box"><img src="https://i.postimg.cc/SNvY65Gn/CSO-A.jpg"></div>
-            <h3>Центр спецоперацій «Альфа»</h3>
-        </div>
-
     </div>
 </div>
 
-<!-- MODALS -->
-<div id="modal-bg" class="modal-bg" onclick="closeModal(event)">
-    <div id="modal" class="modal" onclick="event.stopPropagation()">
-        <img id="modal-img" src="">
-        <h3 id="modal-title"></h3>
-        <p id="modal-text"></p>
-        <button class="close-btn" onclick="closeModal(event)">Закрити</button>
+<div id="info-modal" class="modal-overlay">
+    <div class="modal-content">
+        <span class="close-modal-btn" onclick="closeModal()">&times;</span>
+        <h3 id="modal-title">Заголовок</h3>
+        <div id="modal-description">Опис діяльності...</div>
     </div>
 </div>
 
@@ -230,44 +360,90 @@
 </footer>
 
 <script>
-const data = {
-    dkib: {
-        img: "https://i.postimg.cc/9XRNVxCj/DKIB.jpg",
-        title: "Департамент кібербезпеки",
-        text: "Виявлення, запобігання та протидія кіберзагрозам, кібератакам та шпигунству в інформаційному просторі України."
-    },
-    dvc: {
-        img: "https://i.postimg.cc/8ccGPLpj/Departament-vijskovoi-kontrrozvidki.jpg",
-        title: "Департамент військової контррозвідки",
-        text: "Охорона оборонного потенціалу України, викриття диверсій, шпигунства та загроз у військовому секторі."
-    },
-    atc: {
-        img: "https://i.postimg.cc/xjZD3JT9/Antiteroristicnij-centr-pri-SBU.png",
-        title: "Антитерористичний центр",
-        text: "Протидія і запобігання терактам, звільнення заручників, ліквідація терористичних груп."
-    },
-    uk: {
-        img: "https://i.postimg.cc/jqNRg1Kw/Upr-k-removebg-preview.png",
-        title: "Управління «К»",
-        text: "Боротьба з корупцією, організованою злочинністю та забезпечення економічної безпеки держави."
-    },
-    alfa: {
-        img: "https://i.postimg.cc/SNvY65Gn/CSO-A.jpg",
-        title: "Центр спецоперацій «Альфа»",
-        text: "Елітний підрозділ СБУ, що виконує найскладніші бойові завдання: звільнення заручників, штурмові й контртерористичні операції."
+    // --- СНІГ (Існуючий код) ---
+    function createSnow() {
+        const snowContainer = document.getElementById('snow-container');
+        const snowflake = document.createElement('div');
+        snowflake.classList.add('snowflake');
+
+        // Випадковий розмір сніжинки
+        const size = Math.random() * 4 + 2 + 'px';
+        snowflake.style.width = size;
+        snowflake.style.height = size;
+
+        // Випадкова позиція по горизонталі
+        snowflake.style.left = Math.random() * 100 + 'vw';
+
+        // Випадкова тривалість падіння (від 5 до 12 секунд)
+        const duration = Math.random() * 7 + 5 + 's';
+        snowflake.style.animationDuration = duration;
+
+        // Випадкова затримка перед початком анімації
+        snowflake.style.animationDelay = Math.random() * 2 + 's';
+        
+        // Випадкова прозорість
+        snowflake.style.opacity = Math.random() * 0.5 + 0.3;
+
+        snowContainer.appendChild(snowflake);
+
+        // Видаляємо сніжинку після завершення анімації, щоб не забивати пам'ять
+        setTimeout(() => {
+            snowflake.remove();
+        }, parseFloat(duration) * 1000 + 2000);
     }
-};
 
-function openModal(key) {
-    document.getElementById("modal-img").src = data[key].img;
-    document.getElementById("modal-title").innerText = data[key].title;
-    document.getElementById("modal-text").innerText = data[key].text;
-    document.getElementById("modal-bg").style.display = "flex";
-}
+    // Створюємо нову сніжинку кожні 150мс
+    setInterval(createSnow, 150);
 
-function closeModal(event) {
-    document.getElementById("modal-bg").style.display = "none";
-}
+
+    // --- ФУНКЦІОНАЛ МОДАЛЬНОГО ВІКНА (Новий код) ---
+    
+    // Дані про підрозділи
+    const unitData = {
+        nasb: {
+            title: "НАСБ (Навчальна академія СБУ)",
+            text: "Головний навчальний заклад, що займається підготовкою, перепідготовкою та підвищенням кваліфікації кадрів для Служби безпеки України. Забезпечує науково-дослідну діяльність та формування професійних навичок у курсантів."
+        },
+        csoa: {
+            title: "ЦСО «А» (Альфа)",
+            text: "Елітний спецпідрозділ СБУ, відомий як «Альфа». Основними завданнями є припинення терористичних актів, звільнення заручників, силова підтримка операцій контррозвідки та захист учасників кримінального судочинства."
+        },
+        cu: {
+            title: "ЦУ (Центральне управління)",
+            text: "Головний орган управління, що координує діяльність усіх регіональних органів та підрозділів СБУ. Відповідає за стратегічне планування, аналіз інформації та прийняття ключових рішень у сфері державної безпеки."
+        },
+        acpsb: {
+            title: "АЦПСБ (Антитерористичний центр)",
+            text: "Постійно діючий орган при СБУ, який координує діяльність усіх суб'єктів боротьби з тероризмом в Україні. Розробляє концептуальні засади та програми протидії терористичним загрозам."
+        }
+    };
+
+    const modalOverlay = document.getElementById('info-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDesc = document.getElementById('modal-description');
+
+    // Функція відкриття модального вікна
+    function openModal(unitId) {
+        const data = unitData[unitId];
+        if (data) {
+            modalTitle.textContent = data.title;
+            modalDesc.textContent = data.text;
+            // Використовуємо flex для центрування, як задано в CSS
+            modalOverlay.style.display = 'flex'; 
+        }
+    }
+
+    // Функція закриття модального вікна
+    function closeModal() {
+        modalOverlay.style.display = 'none';
+    }
+
+    // Закриття вікна при кліку поза межами контенту (на затемнений фон)
+    window.onclick = function(event) {
+        if (event.target === modalOverlay) {
+            closeModal();
+        }
+    }
 </script>
 
 </body>
