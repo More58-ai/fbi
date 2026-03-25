@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -302,10 +303,9 @@ footer {
     <div class="header-left">
         <a href="#"><img src="https://i.postimg.cc/pdyjDF1n/sbu-removebg-preview.png" class="logo"></a>
         <a href="#" id="headerTitle">СЛУЖБА БЕЗПЕКИ УКРАЇНИ</a>
-        <span class="christmas-tree">🎄</span>
+      
         <div class="icons mobile-visible" style="margin-left: auto;">
-             <button id="musicToggle" class="mobile-btn">Музика: Вкл</button>
-             <button class="lang-btn mobile-btn" onclick="toggleLang()">ENG</button>
+          
              <span class="burger" onclick="toggleMenu()">☰</span>
         </div>
     </div>
@@ -313,10 +313,10 @@ footer {
     <div class="icons desktop-visible">
         <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/145/145802.png"></a>
         <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/174/174855.png"></a>
-        <a href="https://t.me/+_L963YuDI7hhNmIy" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png"></a>
-        <a href="https://www.youtube.com/@moorechik_official" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png"></a>
+        <a href="https://t.me/+1z0vWMr76DlhZDky" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png"></a>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png"></a>
        
-        <button id="openMusicPicker" >Вибрати музику</button>
+      
         
     </div>
 </header>
@@ -326,12 +326,12 @@ footer {
         <a href="#" id="menuAboutSBU">Про СБУ ▼</a>
         <div class="dropdown-menu">
             <a href="#" onclick="openHistory()" id="submenuHistory">Історія СБУ</a>
-            <a href="https://more58-ai.github.io/fbi/pidrozdil/index.html" target="_blank" id="submenuUnits">Підрозділи</a>
+            
             <a href="#" onclick="openStructure()" id="submenuStructure">Структура</a>
         </div>
     </div>
     <a href="#" onclick="openPress()" id="menuPress">Пресцентр</a>
-    <a href="https://more58-ai.github.io/fbi/tablet/index.html" target="_blank" id="menuTablet">Планшет</a>
+    
     <a href="https://more58-ai.github.io/fbi/sklad/index.html" target="_blank" id="menuStaff">Старший особовий склад</a>
 </nav>
 
@@ -396,52 +396,7 @@ footer {
     </div>
 </div>
 
-<div id="musicPanel" aria-hidden="true">
-    <div class="panel-header">
-        <h3>Музичний плеєр</h3>
-        <button class="close-btn" id="closeMusicPicker">✕</button>
-    </div>
-    <div class="track-list" id="trackList">
-    <div class="track-item active" data-src="https://raw.githubusercontent.com/More58-ai/fbi/main/Wham!%20-%20Last%20Christmas%20(Official%20Video).mp3">
-        <div class="track-meta">
-            <div class="track-title">Last Christmas</div>
-            <div class="track-artist">Wham!</div>
-        </div>
-        <div style="font-size:12px;color:#a0a0a0;">4:38</div>
-    </div>
 
-    <div class="track-item" data-src="https://raw.githubusercontent.com/More58-ai/fbi/main/DZIDZIO%20feat.%20Вова%20зі%20Львова%20-%20Павук.mp3">
-        <div class="track-meta">
-            <div class="track-title">Павук</div>
-            <div class="track-artist">DZIDZIO feat. Вова зі Львова</div>
-        </div>
-        <div style="font-size:12px;color:#a0a0a0;">3:02</div>
-    </div>
-
-    <div class="track-item" data-src="https://raw.githubusercontent.com/More58-ai/fbi/main/Sabrina%20Carpenter%20-%20Espresso%20%5BeVli-tstM5E%5D.mp3">
-        <div class="track-meta">
-            <div class="track-title">Espresso</div>
-            <div class="track-artist">Sabrina Carpenter</div>
-        </div>
-        <div style="font-size:12px;color:#86cef0;">3:20</div>
-    </div>
-</div>
-
-
-    <div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:10px;">
-        <div class="player-controls">
-            <button class="control-btn" id="stopBtn">⏹</button>
-            <button class="control-btn" id="prevBtn" disabled>⏮</button>
-            <button class="control-btn" id="playPauseBtn">▶️</button>
-            <button class="control-btn" id="nextBtn">⏭</button>
-        </div>
-        <div class="progress-row">
-            <div class="time-label" id="currentTime">0:00</div>
-            <input type="range" id="seekBar" value="0" min="0" max="100" step="0.1">
-            <div class="time-label" id="durationTime">0:00</div>
-        </div>
-    </div>
-</div>
 
 <script>
 // --- МАСИВ З ПЕРЕКЛАДАМИ ---
@@ -604,90 +559,7 @@ function openStructure(){ document.getElementById("structureModal").style.displa
 function closeStructure(){ document.getElementById("structureModal").style.display="none"; }
 
 
-/* Решта функцій (Menu toggle, Snowflakes, Music controls) без змін */
-function toggleMenu(){ document.getElementById("navMenu").classList.toggle("show"); }
 
-function createSnowflake() {
-    const snow = document.createElement("div");
-    snow.classList.add("snowflake");
-    snow.textContent = "❄";
-    snow.style.left = Math.random()*100 + "vw";
-    snow.style.fontSize = (Math.random()*10+10)+"px";
-    snow.style.animationDuration=(Math.random()*5+4)+"s";
-    document.body.appendChild(snow);
-    setTimeout(()=>snow.remove(),9000);
-}
-setInterval(createSnowflake,120);
-
-const audio=document.getElementById("bgMusic"); audio.volume=0.3;
-const musicToggleBtn = document.getElementById("musicToggle");
-
-audio.addEventListener('loadeddata', () => {
-    if (audio.autoplay) {
-        musicToggleBtn.textContent="Музика: Вкл";
-    }
-});
-
-musicToggleBtn.onclick=function(){
-    if(audio.paused){ 
-        audio.play().catch(e => console.log('Autoplay error:', e)); 
-        this.textContent="Музика: Вкл"; 
-    } 
-    else { 
-        audio.pause(); 
-        this.textContent="Музика: Викл"; 
-    }
-};
-
-const openPickerBtn=document.getElementById('openMusicPicker');
-const musicPanel=document.getElementById('musicPanel');
-const closePickerBtn=document.getElementById('closeMusicPicker');
-const playPauseBtn=document.getElementById('playPauseBtn');
-const stopBtn=document.getElementById('stopBtn');
-const prevBtn=document.getElementById('prevBtn');
-const nextBtn=document.getElementById('nextBtn');
-const seekBar=document.getElementById('seekBar');
-const currentTimeLabel=document.getElementById('currentTime');
-const durationLabel=document.getElementById('durationTime');
-const trackList=document.getElementById('trackList');
-let activeTrackItem=document.querySelector('.track-item.active');
-
-openPickerBtn.addEventListener('click',()=>{ musicPanel.classList.toggle('show'); });
-closePickerBtn.addEventListener('click',()=>{ musicPanel.classList.remove('show'); });
-
-trackList.addEventListener('click',(e)=>{
-    let item=e.target.closest('.track-item');
-    if(!item) return;
-    if(item===activeTrackItem) return;
-    const src=item.getAttribute('data-src');
-    if(activeTrackItem) activeTrackItem.classList.remove('active');
-    item.classList.add('active');
-    activeTrackItem=item;
-    audio.pause();
-    while(audio.firstChild) audio.removeChild(audio.firstChild);
-    const s=document.createElement('source');
-    s.src=src; s.type='audio/mpeg';
-    audio.appendChild(s); audio.load(); audio.play().catch(e => console.log('Play error:', e));
-});
-
-function updatePlayIcon(){ playPauseBtn.textContent=audio.paused?'▶️':'⏸'; }
-playPauseBtn.addEventListener('click',()=>{ audio.paused?audio.play().catch(e => console.log('Play error:', e)):audio.pause(); updatePlayIcon(); });
-stopBtn.addEventListener('click',()=>{ audio.pause(); audio.currentTime=0; updatePlayIcon(); });
-nextBtn.addEventListener('click',()=>{ audio.currentTime=0; audio.play().catch(e => console.log('Play error:', e)); updatePlayIcon(); });
-prevBtn.addEventListener('click',()=>{ audio.currentTime=0; audio.play().catch(e => console.log('Play error:', e)); updatePlayIcon(); });
-
-audio.addEventListener('timeupdate',()=>{
-    const dur=audio.duration||0, cur=audio.currentTime||0;
-    seekBar.value=(cur/dur)*100||0;
-    currentTimeLabel.textContent=formatTime(cur);
-    durationLabel.textContent=formatTime(dur);
-});
-seekBar.addEventListener('input',(e)=>{ const dur=audio.duration||0; audio.currentTime=(e.target.value/100)*dur; });
-function formatTime(t){ const m=Math.floor(t/60); const s=Math.floor(t%60); return m+':'+(s<10?'0'+s:s); }
-
-audio.addEventListener('play',updatePlayIcon);
-audio.addEventListener('pause',updatePlayIcon);
-document.addEventListener('DOMContentLoaded',()=>{ updatePlayIcon(); });
 </script>
 
 </body>
