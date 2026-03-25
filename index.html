@@ -560,6 +560,53 @@ function closeStructure(){ document.getElementById("structureModal").style.displ
 
 
 
+
+
+    // 1. Блокування правої кнопки миші (контекстного меню)
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    }, false);
+
+    // 2. Блокування гарячих клавіш розробника
+    document.onkeydown = function(e) {
+        // F12
+        if (e.keyCode == 123) { 
+            return false; 
+        }
+        // Ctrl+Shift+I (Інспектор)
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { 
+            return false; 
+        }
+        // Ctrl+Shift+J (Консоль)
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { 
+            return false; 
+        }
+        // Ctrl+Shift+C (Елементи)
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) { 
+            return false; 
+        }
+        // Ctrl+U (Перегляд коду)
+        if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { 
+            return false; 
+        }
+        // Ctrl+S (Збереження сторінки)
+        if (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) { 
+            return false; 
+        }
+    };
+
+    // 3. Захист від перетягування контенту (зображень, тексту)
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+    });
+
+    // 4. Додатково: приховуємо повідомлення в консолі (якщо її все ж відкриють)
+    setInterval(() => {
+        console.clear();
+    }, 500);
+
+
+
 </script>
 
 </body>
