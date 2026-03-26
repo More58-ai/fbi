@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SBU | DATABASE 2026</title>
+    <style>
+        :root {
+            --bg: #0a0c10;
+            --card: #161b22;
+            --accent: #0062ff;
+            --border: #30363d;
+            --open: #28a745;
+            --closed: #d73a49;
+            --freeze: #dbab09;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: #fff;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        /* Навігація */
+        .nav-bar {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .nav-bar button {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: #8b949e;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .nav-bar button.active {
+            border-color: var(--accent);
+            color: #fff;
+            background: rgba(0, 98, 255, 0.1);
+        }
+
+        /* Форма подачі */
+        .main-form {
+            background: var(--card);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px; }
+        label { display: block; font-size: 11px; text-transform: uppercase; color: #8b949e; margin-bottom: 5px; font-weight: bold; }
+        
+        input, textarea, select {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 12px;
+            border-radius: 6px;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        input:focus, textarea:focus { border-color: var(--accent); outline: none; }
+
+        .btn-submit {
+            width: 100%;
+            padding: 18px;
+            background: var(--accent);
+            border: none;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+
+        /* Фільтрація в архіві */
+        .archive-filters { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; }
+        .filter-btn {
+            background: #21262d;
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .filter-btn.active { background: var(--accent); border-color: var(--accent); }
+
+        /* --- СТИЛЬ БЛАНКА --- */
+        .archive-container { display: flex; flex-direction: column; gap: 40px; align-items: center; }
+
+        .paper-sheet {
+            background: #fff;
+            color: #000;
+            width: 190mm;
+            min-height: 270mm;
+            max-height: 280mm; /* Жорстке обмеження, щоб не виходило за листок */
+            padding: 15mm 20mm;
+            box-sizing: border-box;
+            font-family: 'Times New Roman', serif;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0,0,0,0.7);
+            overflow: hidden; /* Ховаємо те, що вилазить */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .paper-header { display: flex; justify-content: space-between; margin-bottom: 15px; }
+        .logo-box { width: 50%; }
+        .logo-box img { width: 75px; }
+        .logo-box h2 { font-size: 14px; margin: 5px 0 0; text-transform: uppercase; }
+        .logo-box p { font-size: 9px; border-top: 1px solid #000; padding-top: 2px; line-height: 1.1; }
+
+        .receiver-box { width: 40%; font-weight: bold; font-size: 12px; padding-top: 15px; }
+
+        .case-id-tag { border: 2px solid #000; padding: 4px 12px; display: inline-block; font-weight: bold; margin: 15px 0; font-size: 15px; }
+
+        .p-section-divider {
+            text-align: center;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-top: 1.5px solid #000;
+            border-bottom: 1.5px solid #000;
+            margin: 10px 0 8px;
+            padding: 3px 0;
+            font-size: 13px;
+        }
+
+        /* Контентні блоки зі скролом */
+        .scroll-text {
+            max-height: 150px; /* Текст не вийде за листок */
+            overflow-y: auto;
+            text-align: justify;
+            font-size: 14px;
+            line-height: 1.3;
+            padding-right: 5px;
+        }
+        .scroll-text::-webkit-scrollbar { width: 3px; }
+        .scroll-text::-webkit-scrollbar-thumb { background: #ddd; }
+
+        /* Кольори статусів */
+        .status-tag { font-weight: bold; text-transform: uppercase; }
+        .status-open { color: var(--open); }
+        .status-closed { color: var(--closed); }
+        .status-freeze { color: var(--freeze); }
+
+        .paper-footer { margin-top: auto; text-align: right; font-weight: bold; padding-top: 10px; border-top: 1px solid #eee; }
+
+        .btn-edit-pencil {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .btn-edit-pencil:hover { background: #e0e0e0; }
+
+        @media print {
+            .nav-bar, .main-form, .archive-filters, .btn-edit-pencil { display: none; }
+            body { background: white; padding: 0; }
+            .paper-sheet { box-shadow: none; margin: 0; width: 100%; border: 1px solid #eee; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="nav-bar">
+        <button id="nav-create" class="active" onclick="changeTab('create')">РЕЄСТРАЦІЯ СПРАВИ</button>
+        <button id="nav-archive" onclick="changeTab('archive')">АРХІВ ГУ СБУ</button>
+    </div>
+
+    <div id="create" class="tab-content">
+        <div class="main-form">
+            <h3 id="formHeader" style="margin-top:0; color:var(--accent)">Складання електронного протоколу</h3>
+            <form id="criminalForm">
+                <input type="hidden" id="editKey">
+                <div class="form-grid">
+                    <div><label>№ Справи</label><input type="text" id="caseNo" placeholder="0151" required></div>
+                    <div><label>Статті ККУ</label><input type="text" id="kku" placeholder="69, 115" required></div>
+                    <div>
+                        <label>Статус</label>
+                        <select id="status">
+                            <option value="ВІДКРИТО">ВІДКРИТО</option>
+                            <option value="ЗАМОРОЖЕНО">ЗАМОРОЖЕНО</option>
+                            <option value="ЗАКРИТО">ЗАКРИТО</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-grid">
+                    <div><label>Дата відкриття</label><input type="text" id="date" placeholder="26.03.2026" required></div>
+                    <div><label>Слідчий (Звання/ПІБ)</label><input type="text" id="officer" required></div>
+                    <div><label>Слідча група</label><input type="text" id="group" placeholder="Alpha-1"></div>
+                </div>
+                <div style="margin-bottom:15px">
+                    <label>Кому подається (Адресат)</label>
+                    <input type="text" id="target" value="Представнику прокуратури Подільського краю">
+                </div>
+                
+                <label>Опис події та склад злочину</label>
+                <textarea id="desc" rows="6" placeholder="Детально опишіть подію..."></textarea>
+
+                <div class="form-grid" style="margin-top:15px">
+                    <div><label>ПІБ Фігуранта</label><input type="text" id="fName"></div>
+                    <div><label>Статус особи</label><input type="text" id="fStat"></div>
+                    <div><label>Додаткова інфо</label><input type="text" id="fInfo"></div>
+                </div>
+
+                <div class="form-grid" style="margin-top:15px">
+                    <div style="grid-column: span 2"><label>Докази</label><textarea id="evidence" rows="2"></textarea></div>
+                    <div><label>Хід розслідування</label><textarea id="process" rows="2"></textarea></div>
+                </div>
+
+                <button type="submit" class="btn-submit" id="saveBtn">ЗБЕРЕГТИ В РЕЄСТР</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="archive" class="tab-content" style="display:none">
+        <div class="archive-filters">
+            <button class="filter-btn active" onclick="setFilter('УСІ')">УСІ</button>
+            <button class="filter-btn" onclick="setFilter('ВІДКРИТО')">ВІДКРИТІ</button>
+            <button class="filter-btn" onclick="setFilter('ЗАМОРОЖЕНО')">ЗАМОРОЖЕНІ</button>
+            <button class="filter-btn" onclick="setFilter('ЗАКРИТО')">ЗАКРИТІ</button>
+        </div>
+        <div id="casesList" class="archive-container">
+            </div>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+    const firebaseConfig = { databaseURL: "https://fbicraminal-default-rtdb.firebaseio.com/" };
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const dbRef = ref(db, 'cases_v2026');
+
+    let currentFilter = 'УСІ';
+    let dataCache = {};
+
+    window.changeTab = (id) => {
+        document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+        document.querySelectorAll('.nav-bar button').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).style.display = 'block';
+        document.getElementById('nav-' + id).classList.add('active');
+    };
+
+    window.setFilter = (f) => {
+        currentFilter = f;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        render();
+    };
+
+    // ЗБЕРЕЖЕННЯ ТА РЕДАГУВАННЯ
+    document.getElementById('criminalForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const key = document.getElementById('editKey').value;
+        const data = {
+            caseNo: document.getElementById('caseNo').value,
+            kku: document.getElementById('kku').value,
+            status: document.getElementById('status').value,
+            date: document.getElementById('date').value,
+            officer: document.getElementById('officer').value,
+            group: document.getElementById('group').value || "Альфа",
+            target: document.getElementById('target').value,
+            desc: document.getElementById('desc').value,
+            fName: document.getElementById('fName').value || "-",
+            fStat: document.getElementById('fStat').value || "-",
+            fInfo: document.getElementById('fInfo').value || "-",
+            evidence: document.getElementById('evidence').value,
+            process: document.getElementById('process').value,
+            ts: Date.now()
+        };
+
+        if(key) {
+            update(ref(db, 'cases_v2026/' + key), data).then(() => {
+                alert("Дані оновлено успішно!");
+                resetForm();
+                changeTab('archive');
+            });
+        } else {
+            push(dbRef, data).then(() => {
+                alert("Справу внесено в базу!");
+                resetForm();
+                changeTab('archive');
+            });
+        }
+    });
+
+    function resetForm() {
+        document.getElementById('criminalForm').reset();
+        document.getElementById('editKey').value = "";
+        document.getElementById('saveBtn').innerText = "ЗБЕРЕГТИ В РЕЄСТР";
+        document.getElementById('formHeader').innerText = "Складання електронного протоколу";
+    }
+
+    // ІНІЦІАЛІЗАЦІЯ РЕДАГУВАННЯ
+    window.startEdit = (key) => {
+        const item = dataCache[key];
+        document.getElementById('editKey').value = key;
+        document.getElementById('caseNo').value = item.caseNo;
+        document.getElementById('kku').value = item.kku;
+        document.getElementById('status').value = item.status;
+        document.getElementById('date').value = item.date;
+        document.getElementById('officer').value = item.officer;
+        document.getElementById('group').value = item.group;
+        document.getElementById('target').value = item.target;
+        document.getElementById('desc').value = item.desc;
+        document.getElementById('fName').value = item.fName;
+        document.getElementById('fStat').value = item.fStat;
+        document.getElementById('fInfo').value = item.fInfo;
+        document.getElementById('evidence').value = item.evidence;
+        document.getElementById('process').value = item.process;
+
+        document.getElementById('saveBtn').innerText = "ОНОВИТИ СПРАВУ";
+        document.getElementById('formHeader').innerText = "Редагування справи №" + item.caseNo;
+        changeTab('create');
+    };
+
+    onValue(dbRef, (snap) => {
+        dataCache = snap.val() || {};
+        render();
+    });
+
+    function render() {
+        const container = document.getElementById('casesList');
+        container.innerHTML = "";
+        const keys = Object.keys(dataCache).reverse();
+
+        keys.forEach(key => {
+            const item = dataCache[key];
+            if(currentFilter !== 'УСІ' && item.status !== currentFilter) return;
+
+            // Визначення кольору статусу
+            let statusStyle = 'status-open';
+            if(item.status === 'ЗАМОРОЖЕНО') statusStyle = 'status-freeze';
+            if(item.status === 'ЗАКРИТО') statusStyle = 'status-closed';
+
+            container.innerHTML += `
+                <div class="paper-sheet">
+                    <div class="paper-header">
+                        <div class="logo-box">
+                            <img src="https://i.postimg.cc/9XTQJg5Z/SBU-removebg-preview.png">
+                            <h2>Служба Безпеки України</h2>
+                            <p>ГУ Центральної України | м. Дніпро, вул. Святослава Хороброго, 23</p>
+                        </div>
+                        <div class="receiver-box">${item.target}</div>
+                    </div>
+
+                    <div class="case-id-tag">СБУ | №${item.caseNo} | ${item.kku} ККУ</div>
+
+                    <div class="p-section-divider">Основні дані</div>
+                    <div style="font-size:13px">
+                        <b>Статус:</b> <span class="status-tag ${statusStyle}">${item.status}</span><br>
+                        <b>Дата відкриття:</b> ${item.date}<br>
+                        <b>Головний слідчий:</b> ${item.officer}<br>
+                        <b>Слідча група:</b> ${item.group}
+                    </div>
+
+                    <div class="p-section-divider">Обставини справи</div>
+                    <div class="scroll-text" style="max-height: 200px;">${item.desc}</div>
+
+                    <div class="p-section-divider">Фігуранти</div>
+                    <div style="font-size:13px">
+                        <b>ПІБ:</b> ${item.fName} | <b>Статус:</b> ${item.fStat}<br>
+                        <b>Примітка:</b> ${item.fInfo}
+                    </div>
+
+                    <div class="p-section-divider">Матеріали справи</div>
+                    <div class="scroll-text" style="max-height: 100px;">
+                        <b>Доказова база:</b> ${item.evidence}<br><br>
+                        <b>Хід слідства:</b> ${item.process}
+                    </div>
+
+                    <div class="paper-footer">
+                        ${item.officer}<br>
+                        <span style="font-size:10px; font-weight:normal;">Дата випуску: ${item.date}</span>
+                    </div>
+
+                    <button class="btn-edit-pencil" onclick="startEdit('${key}')">✏️ Редагувати</button>
+                </div>
+            `;
+        });
+    }
+    // Блокування правої кнопки миші
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    // Блокування клавіш розробника
+    document.onkeydown = function(e) {
+        // Блокуємо F12
+        if(event.keyCode == 123) { return false; }
+        // Блокуємо Ctrl+Shift+I (Інспектор)
+        if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; }
+        // Блокуємо Ctrl+Shift+J (Консоль)
+        if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { return false; }
+        // Блокуємо Ctrl+U (Вихідний код)
+        if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; }
+        // Блокуємо Ctrl+S (Збереження)
+        if(e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) { return false; }
+    };
+
+    // Додатковий захист від перетягування картинок
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+    });
+</script>
+</body>
+</html>
